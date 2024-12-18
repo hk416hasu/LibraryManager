@@ -6,22 +6,24 @@
 </head>
 
 <style>
+    h1 {text-align:center;}
     button {
         display: block;
         margin: 0 auto;
         padding: 30px 60px;
         font-size: 66px;
     }
+    p.data {text-align:right;}
 </style>
 
 <body>
     <h1> a demo on interacting with Nodejs </h1>
     <button id="fetchDate">Get Date!</button>
-    <p id="output"></p>
+    <p class="data" id="data_output"></p>
 
     <script>
         document.getElementById('fetchDate').addEventListener('click', () => {
-                    document.getElementById('output').innerHTML=Date();
+                    document.getElementById('data_output').innerHTML=Date();
                 });
     </script>
 </body>

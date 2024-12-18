@@ -18,7 +18,7 @@ const server = http.createServer(function (request, response) {
             console.log(err);
             // if error, reture 404 not found
             response.writeHead(404, { 'Content-Type': 'text/html' });
-            response.end("404 Not Found");
+            response.end("404 Not Found :3");
         } else {
             // get extend-name of file, and get Content-Type
             var extname = path.extname(filePath);
