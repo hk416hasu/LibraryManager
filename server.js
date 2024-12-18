@@ -5,41 +5,32 @@ var path = require('path'); // resolve the extend-name of files
 
 // create a server
 const server = http.createServer(function (request, response) {
+    // resolve the request and file
+    var pathname = url.parse(request.url).pathname;
+    console.log("Request for " + pathname + " received.");
 
+    // set default file (index.html)
+    var filePath = pathname === "/" ? "./index.html" : "." + pathname;
 
-    if (request.url === '/data') {
-        response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ message: 'Hello from Node.js!' }));
-    } else {
+    // read the expect file from fs
+    fs.readFile(filePath, function (err, data) {
+        if (err) {
+            console.log(err);
+            // if error, reture 404 not found
+            response.writeHead(404, { 'Content-Type': 'text/html' });
+            response.end("404 Not Found");
+        } else {
+            // get extend-name of file, and get Content-Type
+            var extname = path.extname(filePath);
+            var contentType = getContentType(extname);
 
-        // resolve the request and file
-        var pathname = url.parse(request.url).pathname;
-        console.log("Request for " + pathname + " received.");
+            // HTTP status: 200 : OK
+            response.writeHead(200, { 'Content-Type': contentType });
 
-        // set default file (index.html)
-        var filePath = pathname === "/" ? "./index.html" : "." + pathname;
-
-        // read the expect file from fs
-        fs.readFile(filePath, function (err, data) {
-            if (err) {
-                console.log(err);
-                // if error, reture 404 not found
-                response.writeHead(404, { 'Content-Type': 'text/html' });
-                response.end("404 Not Found");
-            } else {
-                // get extend-name of file, and get Content-Type
-                var extname = path.extname(filePath);
-                var contentType = getContentType(extname);
-
-                // HTTP status: 200 : OK
-                response.writeHead(200, { 'Content-Type': contentType });
-
-                // response with file
-                response.end(data);
-            }
-        });
-
-    }
+            // response with file
+            response.end(data);
+        }
+    });
 });
 
 // mapping of Content-Type and extend-name

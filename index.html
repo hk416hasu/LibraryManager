@@ -16,18 +16,12 @@
 
 <body>
     <h1> a demo on interacting with Nodejs </h1>
-    <button id="fetchData">Get Data!</button>
+    <button id="fetchDate">Get Date!</button>
     <p id="output"></p>
 
     <script>
-        document.getElementById('fetchData').addEventListener('click', () => {
-                    // fetch('/data') // same
-                    fetch('http://hk416hasu.fun/data')
-                        .then(response => response.json())
-                        .then(data => {
-                                    document.getElementById('output').innerText = `${data.message}`;
-                                    // document.write(`${data.message}`);
-                                })
+        document.getElementById('fetchDate').addEventListener('click', () => {
+                    document.getElementById('output').innerHTML=Date();
                 });
     </script>
 </body>
