@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+.form-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+    width: 400px; /* Ensure consistent width for alignment */
+}
+.form-group label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+.form-group input {
+    flex: 0;
+}
+.form-group .required {
+    color: red;
+    margin-left: 5px;
+}
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    white-space: nowrap;
+    position: absolute;
+    left: 400px; /* Adjust to ensure proper spacing */
+}
+.button-container {
+    margin-left: 110px;
+}

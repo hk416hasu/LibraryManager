@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1">
     <title>Interact with Node.js</title>
-</head>
-
+    <link rel="stylesheet" type="text/css" href="./css/login.css">
 <style>
     h1 {text-align: center;}
     p.data {text-align: right; font-size: 24px;}
     p.main {text-align: center; font-size: 30px;}
 </style>
+</head>
 
 <body>
     <p class="data" id="date_output"></p>
@@ -20,14 +20,12 @@
         Click ME!
     </button>
     <p class="main" id="main_text"></p>
-
     <script src="./scripts/updateTime.js"></script>
 
 <!------------------------------------------------------------------------------->
 <hr />
-<br></br>
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
+<div style="margin: 30px; display: flex; justify-content: center; align-items: center; gap: 5px;">
     <input style="text-align: center;" id='input_demo' type="text">
     <button type="button" onclick="myinput_test()">
         这是数字么?
@@ -35,18 +33,32 @@
 </div>
     <script src="./scripts/isNumber.js"></script>
 
+
 <!------------------------------------------------------------------------------->
-<br></br>
 <hr />
 
 <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
-    <p> 用户id: </p>
-    <input style="text-align: center;" id='input_id' type='text'>
-    <p style='color:red'> * </p>
-    <p> 密码: </p>
-    <input style="text-align: center;" id='input_id' type='text'>
-    <p style='color:red'> * </p>
+<form style="margin-top: 30px" id="login-form">
+    <div class="form-group">
+        <label for="username">用户名：</label>
+        <input type="text" id="username" name="username" required>
+        <span class="required">*</span>
+        <div id="username-error" class="error-message"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="password">密码：</label>
+        <input type="password" id="password" name="password" required>
+        <span class="required">*</span>
+        <div id="password-error" class="error-message"></div>
+    </div>
+
+    <div class="button-container">
+        <button type="submit">登录</button>
+    </div>
+</form>
 </div>
+<script src="./scripts/login-check.js"></script>
 
 
 </body>
