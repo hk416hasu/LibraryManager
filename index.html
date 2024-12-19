@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1">
     <title>Interact with Node.js</title>
 </head>
 
@@ -20,22 +21,11 @@
     </button>
     <p class="main" id="main_text"></p>
 
-    <script>
-        function updateTime() {
-            document.getElementById('date_output').innerHTML = new Date().toLocaleString();
-        }
-
-        updateTime(); // Update when loading html
-
-        // Update the time every second
-        setInterval(updateTime, 1000);
-
-        document.getElementById('fetchDate').addEventListener('click', () => {
-            document.getElementById('main_text').innerHTML="HELLO WORLD \u{1F973}";
-        });
-    </script>
+    <script src="./scripts/updateTime.js"></script>
 
 <!------------------------------------------------------------------------------->
+<hr />
+<br></br>
 
 <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
     <input style="text-align: center;" id='input_demo' type="text">
@@ -43,17 +33,21 @@
         这是数字么?
     </button>
 </div>
-    <script>
-        function myinput_test() {
-            var x = document.getElementById('input_demo').value.trim(); // remove spaces
-                                                // .value return a string
-            if (x.match(/^[-+]?\d+(\.\d+)?$/)) { // test() is different from match()
-                alert("Yes \uD83C\uDF89");
-            } else {
-                alert("No \uD83D\uDE02");
-            }
-        }
-    </script>
+    <script src="./scripts/isNumber.js"></script>
+
+<!------------------------------------------------------------------------------->
+<br></br>
+<hr />
+
+<div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
+    <p> 用户id: </p>
+    <input style="text-align: center;" id='input_id' type='text'>
+    <p style='color:red'> * </p>
+    <p> 密码: </p>
+    <input style="text-align: center;" id='input_id' type='text'>
+    <p style='color:red'> * </p>
+</div>
+
 
 </body>
 </html>

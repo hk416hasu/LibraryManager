@@ -42,6 +42,7 @@ function getContentType(extname) {
         '.json': 'application/json',
         '.png': 'image/png',
         '.jpg': 'image/jpg',
+        '.ico': 'image/x-con',
         '.gif': 'image/gif',
         '.mp3': 'audio/mpeg',
         '.mp4': 'video/mp4',
