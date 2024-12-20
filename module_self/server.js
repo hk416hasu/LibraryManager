@@ -60,6 +60,10 @@ function getContentType(extname) {
     return mimeTypes[extname];
 }
 
-server.listen(80, '0.0.0.0', () => {
-    console.log('server is running');
-}); 
+const startServer = (port) => {
+    server.listen(port, '0.0.0.0', () => {
+        console.log('server is running');
+    }); 
+};
+
+module.exports = { startServer };
