@@ -1,4 +1,4 @@
-function myinput_test() {
+function isNumber() {
     var x = document.getElementById('input_demo').value.trim(); // remove spaces
                                         // .value return a string
     if (x.match(/^[-+]?\d+(\.\d+)?$/)) { // test() is different from match()

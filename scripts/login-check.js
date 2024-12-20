@@ -15,7 +15,7 @@ function validateForm() {
     }
 
     // Password validation: At least 6 characters
-    const passwordRegex = /^.{6,}$/;
+    const passwordRegex = /^.{6,50}$/;
     const passwordError = document.getElementById('password-error');
     if (!passwordRegex.test(password)) {
         passwordError.textContent = '密码必须至少包含6个字符。';
@@ -30,6 +30,9 @@ function validateForm() {
 document.getElementById('login-form').addEventListener('submit', (event) => {
     if (!validateForm()) {
         event.preventDefault(); // Prevent form submission if validation fails
+        alert("\u{1f605}");
+    } else {
+        alert("\u{1f60a}");
     }
 });
 
