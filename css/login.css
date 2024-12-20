@@ -1,8 +1,4 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-.form-group {
+body .form-group {
     display: flex;
     justify-content: center;
     align-items: center;
