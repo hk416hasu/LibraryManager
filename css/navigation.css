@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* 使内容两端对齐 */
+    align-items: center; /* 垂直居中 */
+    background-color: #7dbd7a;
+    padding: 10px 20px;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* 使用flex布局让导航项横向排列 */
+}
+
+.nav-links li {
+    margin-right: 20px;
+}
+
+.nav-links li:last-child {
+    margin-right: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-links a:hover {
+    background-color: #5a9c58;
+}
+
+.nav-links a:active {
+    background-color: #4c8d47;
+}
+
+#date_output {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
