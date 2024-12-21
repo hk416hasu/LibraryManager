@@ -1,5 +1,5 @@
 *.swp
-audio/
+public/audio/
 node_modules/
 package*
 log
