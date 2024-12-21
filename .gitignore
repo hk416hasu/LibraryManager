@@ -3,3 +3,4 @@ audio/
 node_modules/
 package*
 log
+server.log
