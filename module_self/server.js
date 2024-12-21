@@ -9,10 +9,10 @@ function startServer(rootPath) {
         next();
     });
 
-    app.use(express.static(path.join(rootPath)));
+    app.use(express.static(path.join(rootPath, 'public')));
 
     app.use((req, res, next) => {
-        res.status(404).sendFile(path.join(rootPath, '404.html'));
+        res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
         next(error);
     });
 
