@@ -33,7 +33,6 @@ function startServer(rootPath) {
 
     app.use((req, res, next) => {
         res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
-        next(error);
     });
 
     app.use((err, req, res, next) => {
