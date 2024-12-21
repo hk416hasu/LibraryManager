@@ -41,7 +41,12 @@
 
 
     <h1 style="text-align: center"> 欢迎使用 你电图书管理系统！</h1>
+    <h1 style="text-align: center"> Welcome to this Library Managment System!</h1>
     <h2 style="text-align: center"> 你好，华电！</h2>
+    <h2 style="text-align: center"> Hello from NCEPU!</h2>
+<hr />
+<h3 style="text-align: center"> Hello Nana! wish u happy~ &#x1F609</h3>
+<hr />
     <button style="display: block; margin: 0 auto; padding: 30px 60px; font-size: 66px;"
         id="fetchDate">
         Click ME!
@@ -53,9 +58,9 @@
 <hr />
 
 <div style="margin: 30px; display: flex; justify-content: center; align-items: center; gap: 5px;">
-    <input style="text-align: center;" id='input_demo' type="text">
+    <input style="text-align: center;" placeholder="plz input a num, or not" id='input_demo' type="text">
     <button type="button" onclick="isNumber()">
-        这是数字么?
+        这是数字么? isNumber?
     </button>
 </div>
     <script src="./scripts/isNumber.js"></script>
@@ -67,22 +72,23 @@
 <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
 <form style="margin-top: 30px" id="login-form">
     <div class="form-group">
-        <label for="username">用户名：</label>
+        <label for="username">用户名/User:</label>
         <input type="text" id="username" name="username" required>
         <span class="required">*</span>
         <div id="username-error" class="error-message"></div>
     </div>
 
     <div class="form-group">
-        <label for="password">密码：</label>
+        <label for="password">密码/Code:</label>
         <input type="password" id="password" name="password" required>
         <span class="required">*</span>
         <div id="password-error" class="error-message"></div>
     </div>
 
     <div class="button-container">
-        <button type="submit">登录</button>
+        <button type="submit">登录/sign in</button>
     </div>
+    <p style="color: green;"> u can input something, and nothing will happen, because i didn't code it www </p>
 </form>
 </div>
 <script src="./scripts/login-check.js"></script>
@@ -91,8 +97,9 @@
 <hr />
 
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-  <h1>简单的前后端交互示例</h1>
-  <button id="execute" title="前后端交互">点击执行</button>
+  <h1 style="margin-bottom: 0">简单的前后端交互示例</h1>
+  <h3 style="margin-top: 0">a simple interaction from front-end to back-end on my server</h3>
+  <button id="execute" title="前后端交互">点击执行/Execute!</button>
   <p style="text-align: center;" id="result"></p>
 </div>
   <script>
