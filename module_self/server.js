@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require('express'); // "require" to import a "factory function"
+const app = express();              // get an instance of `express`
 const path = require('path');
-const app = express();
 
 function startServer(rootPath) {
 
@@ -9,7 +9,8 @@ function startServer(rootPath) {
       next();
    });
 
-   app.use(express.static(path.join(rootPath, 'public')));
+   // app.use(express.static(path.join(rootPath, 'public')));
+   app.use(express.static('public'));
 
    const exeDemoRouter = require('./routes/executeHello.js');
    app.use('/api', exeDemoRouter);

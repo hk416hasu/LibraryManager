@@ -4,7 +4,7 @@ const { execFile } = require('child_process'); // the two
 const path = require('path');                  // are paired
 
 router.post('/executeHello', (req, res) => {
-   const elfPath = './build/hello'; // relate to main.js, NOT current js
+   const elfPath = './build/hello'; // relate to the Node-Working-dir, NOT current js
    const args = ['yixuan', 'guanxin', 'tianci', 'guoli', 'Nana'];
 
    execFile(elfPath, args, (error, stdout, stderr) => {
