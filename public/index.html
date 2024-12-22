@@ -1,176 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1">
-    <title>你电图书管理系统</title>
-    <link rel="stylesheet" type="text/css" href="./css/login.css">
-    <link rel="stylesheet" href="./css/navigation.css">
-<style>
-    p.main {text-align: center; font-size: 30px;}
-</style>
+   <meta charset="UTF-8">
+   <meta content="width=device-width, initial-scale=1">
+   <title>你电图书管理系统</title>
+   <link rel="stylesheet" type="text/css" href="./css/login.css">
+   <link rel="stylesheet" href="./css/navigation.css">
+   <style>
+      p.main {text-align: center; font-size: 30px;}
+   </style>
 </head>
 
 <body>
-    
-    <div id="top" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #f5f5f5;">
-        <div style="display: flex; font-size: 36px;">
-            <p style="color: #0075cb; margin: 0; margin-left: 110px;">你</p>
-            <p style="margin: 0;">好华</p>
-            <p style="color: #0075cb; margin: 0;">电</p>
-            <p style="margin: 0;">图书管理系统</p>
-        </div>
-        <div id="login-box" style="display: flex; align-items: center; margin: 0; margin-right: 50px; font-size: 18px;">
-            <p style="margin: 0;">hi, 请</p>
-            <a href="/html/login.html" style="margin-left: 3px; text-decoration: none; color: #0075cb;">登录</a>
-        </div>
-    </div>
+   <div id="top" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #f5f5f5;">
+      <div style="display: flex; font-size: 36px;">
+         <p style="color: #0075cb; margin: 0; margin-left: 110px;">你</p>
+         <p style="margin: 0;">好华</p>
+         <p style="color: #0075cb; margin: 0;">电</p>
+         <p style="margin: 0;">图书管理系统</p>
+      </div>
+      <div id="login-box" style="display: flex; align-items: center; margin: 0; margin-right: 50px; font-size: 18px;">
+         <p style="margin: 0;">hi, 请</p>
+         <a href="/html/login.html" style="margin-left: 3px; text-decoration: none; color: #0075cb;">登录</a>
+      </div>
+   </div>
 
-<!------------------------------------------------------------------------------->
+   <!------------------------------------------------------------------------------->
 
-    <div class="navbar">
-        <ul class="nav-links">
-            <li><a href="/index.html">首页</a></li>
-            <li><a href="/404.html">馆藏查询</a></li>
-            <li><a href="/404.html">资源荐购</a></li>
-            <li><a href="/404.html">个人信息</a></li>
-        </ul>
-        <p id="date_output" style="margin: 0;"></p>
-        <script src="./scripts/updateTime.js"></script>
-    </div>
-
-
-    <h1 style="text-align: center"> 欢迎使用 你电图书管理系统！</h1>
-    <h1 style="text-align: center"> Welcome to this Library Managment System!</h1>
-    <h2 style="text-align: center"> 你好，华电！</h2>
-    <h2 style="text-align: center"> Hello from NCEPU!</h2>
-<hr />
-<h3 style="text-align: center"> Hello Nana! wish u happy~ &#x1F609</h3>
-<hr />
-    <button style="display: block; margin: 0 auto; padding: 30px 60px; font-size: 66px;"
-        id="fetchDate">
-        Click ME!
-    </button>
-    <p class="main" id="main_text" style="text-align: center; font-size: 30px"></p>
-    <script src="./scripts/helloworld.js"></script>
-
-<!------------------------------------------------------------------------------->
-<hr />
-
-<div style="margin: 30px; display: flex; justify-content: center; align-items: center; gap: 5px;">
-    <input style="text-align: center;" placeholder="plz input a num, or not" id='input_demo' type="text">
-    <button type="button" onclick="isNumber()">
-        这是数字么? isNumber?
-    </button>
-</div>
-    <script src="./scripts/isNumber.js"></script>
+   <div class="navbar">
+      <ul class="nav-links">
+         <li><a href="/index.html">首页</a></li>
+         <li><a href="/404.html">馆藏查询</a></li>
+         <li><a href="/404.html">资源荐购</a></li>
+         <li><a href="/404.html">个人信息</a></li>
+      </ul>
+      <p id="date_output" style="margin: 0;"></p>
+      <script src="./scripts/updateTime.js"></script>
+   </div>
 
 
-<!------------------------------------------------------------------------------->
-<hr />
+   <h1 style="text-align: center"> 欢迎使用 你电图书管理系统！</h1>
+   <h1 style="text-align: center"> Welcome to this Library Managment System!</h1>
+   <h2 style="text-align: center"> 你好，华电！</h2>
+   <h2 style="text-align: center"> Hello from NCEPU!</h2>
+   <hr />
+   <h3 style="text-align: center"> Hello Nana! wish u happy~ &#x1F609</h3>
+   <hr />
+   <button style="display: block; margin: 0 auto; padding: 30px 60px; font-size: 66px;" id="fetchDate">
+      Click ME!
+   </button>
+   <p class="main" id="main_text" style="text-align: center; font-size: 30px"></p>
+   <script src="./scripts/helloworld.js"></script>
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
-<form style="margin-top: 30px" id="login-form">
-    <div class="form-group">
-        <label for="username">用户名/User:</label>
-        <input type="text" id="username" name="username" required>
-        <span class="required">*</span>
-        <div id="username-error" class="error-message"></div>
-    </div>
+   <!------------------------------------------------------------------------------->
+   <hr />
 
-    <div class="form-group">
-        <label for="password">密码/Code:</label>
-        <input type="password" id="password" name="password" required>
-        <span class="required">*</span>
-        <div id="password-error" class="error-message"></div>
-    </div>
+   <div style="margin: 30px; display: flex; justify-content: center; align-items: center; gap: 5px;">
+      <input style="text-align: center;" placeholder="plz input a num, or not" id='input_demo' type="text">
+      <button type="button" onclick="isNumber()">
+         这是数字么? isNumber?
+      </button>
+   </div>
+   <script src="./scripts/isNumber.js"></script>
 
-    <div class="button-container">
-        <button type="submit">登录/sign in</button>
-    </div>
-    <p style="color: green;"> u can input something, and nothing will happen, because i didn't code it www </p>
-</form>
-</div>
-<script src="./scripts/login-check.js"></script>
 
-<!------------------------------------------------------------------------------->
-<hr />
+   <!------------------------------------------------------------------------------->
+   <hr />
 
-<div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-  <h1 style="margin-bottom: 0">简单的前后端交互示例</h1>
-  <h3 style="margin-top: 0">a simple interaction from front-end to back-end on my server</h3>
-  <button id="execute" title="前后端交互">点击执行/Execute!</button>
-  <p style="text-align: center;" id="result"></p>
-</div>
-  <script>
-    document.getElementById("execute").addEventListener("click", async () => {
-      try {
-        const response = await fetch('/executeHello', { method: 'POST' });
-        const result = await response.text();
-        document.getElementById("result").innerHTML = result.replace(/\n/g, '<br>'); // 替换换行符为 <br>
-      } catch (error) {
-        console.error("发生错误：", error);
-        document.getElementById("result").textContent = "发生错误，请查看控制台日志。";
-      }
-    });
-  </script>
+   <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
+      <form style="margin-top: 30px" id="login-form">
+         <div class="form-group">
+            <label for="username">用户名/User:</label>
+            <input type="text" id="username" name="username" required>
+            <span class="required">*</span>
+            <div id="username-error" class="error-message"></div>
+         </div>
 
-<!------------------------------------------------------------------------------->
-<hr />
+         <div class="form-group">
+            <label for="password">密码/Code:</label>
+            <input type="password" id="password" name="password" required>
+            <span class="required">*</span>
+            <div id="password-error" class="error-message"></div>
+         </div>
 
-<div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-    <button id='music'>fetch and play mus!c</button>
-    <audio id="audio-player" controls></audio>
-    <script>
-//      document.getElementById("music").addEventListener("click", async () => {
-//          fetch('http://hk416hasu.fun/audio/glitch_city.mp3')
-//              .then(response => response.blob())
-//              .then(audioBlob => {
-//                  // Create a URL for the Blob and set it as the audio source
-//                  const audioURL = URL.createObjectURL(audioBlob);
-//                  const audioPlayer = document.getElementById("audio-player");
-//                  audioPlayer.src = audioURL;
-//                  audioPlayer.play();
-//              })
-//              .catch(error => console.error('Error:', error));
-//      });
-        document.getElementById("music").addEventListener("click", async () => {
-            try {
-                const response = await fetch('http://hk416hasu.fun/audio/glitch_city.mp3');
-                const audioBlob = await response.blob();
-                const audioURL = URL.createObjectURL(audioBlob);
-                const audioPlayer = document.getElementById("audio-player");
-                audioPlayer.src = audioURL;
-                audioPlayer.play();
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    </script>
-</div>
+         <div class="button-container">
+            <button type="submit">登录/sign in</button>
+         </div>
+         <p style="color: green;"> u can input something, and nothing will happen, because i didn't code it www </p>
+      </form>
+   </div>
+   <script src="./scripts/login-check.js"></script>
 
-<!------------------------------------------------------------------------------->
-<hr />
+   <!------------------------------------------------------------------------------->
+   <hr />
 
-<div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-    <p style="text-align: center;" id="async_demo">0</p>
-    <script>
-        async function async_print() {
-            await setTimeout(() => {
-                document.getElementById("async_demo").innerHTML = "1";
-            }, 1000);
-            await setTimeout(() => {
-                document.getElementById("async_demo").innerHTML = "2";
-            }, 2000);
-            await setTimeout(() => {
-                document.getElementById("async_demo").innerHTML = "3";
-            }, 3000);
-        }
-        async_print();
-    </script>
-</div>
+   <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+      <h1 style="margin-bottom: 0">简单的前后端交互示例</h1>
+      <h3 style="margin-top: 0">a simple interaction from front-end to back-end on my server</h3>
+      <button id="execute" title="前后端交互">点击执行/Execute!</button>
+      <p style="text-align: center;" id="result"></p>
+   </div>
+   <script src="./scripts/call_backEnd.js"></script>
 
-<a href="#top" style="display: flex; justify-content: right;">up</a>
+   <!------------------------------------------------------------------------------->
+   <hr />
+
+   <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+      <button id='music'>fetch and play mus!c</button>
+      <audio id="audio-player" controls></audio>
+      <script src="./scripts/fetch-music.js"></script>
+   </div>
+
+   <!------------------------------------------------------------------------------->
+   <hr />
+
+   <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+      <p style="text-align: center;" id="async_demo">0</p>
+      <script src="./scripts/try_async.js"></script>
+   </div>
+
+   <a href="#top" style="display: flex; justify-content: right;">up</a>
 
 </body>
 </html>
