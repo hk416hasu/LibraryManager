@@ -4,3 +4,6 @@ node_modules/
 package*
 log
 server.log
+build/*
+!build/**/*.c
+!build/**/Makefile
