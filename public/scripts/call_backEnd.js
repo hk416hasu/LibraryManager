@@ -1,6 +1,6 @@
 document.getElementById("execute").addEventListener("click", async () => {
   try {
-    const response = await fetch('/executeHello', { method: 'POST' });
+    const response = await fetch('/api/executeHello', { method: 'POST' });
     const result = await response.text();
     document.getElementById("result").innerHTML = result.replace(/\n/g, '<br>'); // 替换换行符为 <br>
   } catch (error) {
