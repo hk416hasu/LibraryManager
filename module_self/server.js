@@ -14,7 +14,7 @@ function startServer(rootPath) {
 
     app.post('/executeHello', (req, res) => {
         //const elfPath = '/home/ubuntu/nodejs/exe/hello';
-        const elfPath = './exe/hello';
+        const elfPath = './build/hello';
         const args = ['yixuan', 'liguan', 'tianci', 'guoli'];
 
         execFile(elfPath, args, (error, stdout, stderr) => {
