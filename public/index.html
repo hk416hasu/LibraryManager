@@ -84,6 +84,13 @@
             <div id="password-error" class="error-message"></div>
          </div>
 
+         <div class="form-group">
+            <label for="email-input">email:</label>
+            <input type="email" id="email-input" name="email" required>
+            <span class="required">*</span>
+            <div id="email-error" class="error-message"></div>
+         </div>
+
          <div class="button-container">
             <button type="submit">登录/sign in</button>
          </div>
@@ -99,7 +106,7 @@
       <h1 style="margin-bottom: 0">简单的前后端交互示例</h1>
       <h3 style="margin-top: 0">a simple interaction from front-end to back-end on my server</h3>
       <button id="execute" title="前后端交互">点击执行/Execute!</button>
-      <p style="text-align: center;" id="result"></p>
+      <p style="text-align: left; margin-left: 150px;" id="result"></p>
    </div>
    <script src="./scripts/call_backEnd.js"></script>
 

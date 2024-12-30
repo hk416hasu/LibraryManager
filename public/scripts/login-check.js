@@ -1,6 +1,7 @@
 function validateForm() {
    const username = document.getElementById('username').value;
    const password = document.getElementById('password').value;
+   const email = document.getElementById('email-input').value;
 
    let isValid = true;
 
@@ -8,7 +9,7 @@ function validateForm() {
    const usernameRegex = /^[a-zA-Z0-9]{3,}$/;
    const usernameError = document.getElementById('username-error');
    if (!usernameRegex.test(username)) {
-      usernameError.textContent = '用户名必须至少包含3个字符，只能包含字母和数字。';
+      usernameError.textContent = '用户名必须至少包含3个字符，只能包含字母和数字';
       isValid = false;
    } else {
       usernameError.textContent = '';
@@ -18,10 +19,19 @@ function validateForm() {
    const passwordRegex = /^.{6,50}$/;
    const passwordError = document.getElementById('password-error');
    if (!passwordRegex.test(password)) {
-      passwordError.textContent = '密码必须至少包含6个字符。';
+      passwordError.textContent = '密码必须至少包含6个字符';
       isValid = false;
    } else {
       passwordError.textContent = '';
+   }
+
+   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   const emailError = document.getElementById('email-error');
+   if (!emailRegex.test(email)) {
+      emailError.textContent = 'Email is NOT valid';
+      isValid = false;
+   } else {
+      emailError.textContent = '';
    }
 
    return isValid;
