@@ -4,6 +4,8 @@ const path = require('path');
 
 function startServer(rootPath) {
 
+   app.use(express.json());
+
    app.use((req, res, next) => {
       console.log(`Request received: ${req.method} ${req.url}`);
       next();
@@ -13,7 +15,10 @@ function startServer(rootPath) {
    app.use(express.static('public'));
 
    const exeDemoRouter = require('./routes/executeHello.js');
-   app.use('/api', exeDemoRouter);
+   app.use('/api/execute', exeDemoRouter);
+
+   const emailRouter = require('./routes/email.js');
+   app.use('/api/email', emailRouter);
 
    app.use((req, res, next) => {
       res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));

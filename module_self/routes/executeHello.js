@@ -3,7 +3,7 @@ const router = express.Router();
 const { execFile } = require('child_process'); // the two 
 const path = require('path');                  // are paired
 
-router.post('/executeHello', (req, res) => {
+router.post('/Hello', (req, res) => {
    const elfPath = './build/hello'; // relate to the Node-Working-dir, NOT current js
    const args = ['yixuan', 'guanxin', 'tianci', 'guoli', 'Nana'];
 
