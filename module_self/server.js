@@ -23,7 +23,7 @@ function startServer(rootPath) {
       res.status(500).send('Internel Server Error');
    });
 
-   app.listen(80, '0.0.0.0', () => {
+   app.listen(3000, '0.0.0.0', () => {
       console.log('Server is running');
    });
 }
