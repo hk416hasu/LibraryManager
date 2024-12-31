@@ -22,11 +22,59 @@
       </div>
       <div id="login-box" style="display: flex; align-items: center; margin: 0; margin-right: 50px; font-size: 18px;">
          <p style="margin: 0;">hi, 请</p>
-         <a href="/html/login.html" style="margin-left: 3px; text-decoration: none; color: #0075cb;">登录</a>
+         <a href="javascript:void(0)"
+            onclick="document.getElementById('id01').style.display='block'"
+            style="margin-left: 3px; text-decoration: none; color: #0075cb;">
+            登录
+         </a>
       </div>
    </div>
 
-   <!------------------------------------------------------------------------------->
+   <div id="id01" class="modal">
+
+      <form class="modal-content animate" action="/action_page.php" method="post">
+         <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+         </div>
+
+         <div class="container">
+            <div style="display: flex">
+               <label for="uname"><b>Username</b></label>
+               <span class="required">*</span>
+               <div id="username-error" class="error-message"></div>
+            </div>
+            <input type="text" placeholder="Enter Username" name="uname" required>
+
+            <div style="display: flex">
+               <label for="psw"><b>Password</b></label>
+               <span class="required">*</span>
+               <div id="password-error" class="error-message"></div>
+            </div>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <button type="submit">Login</button>
+            <label>
+               <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+         </div>
+
+         <div class="container" style="background-color:#f1f1f1">
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            <span class="psw"><a href="#">Forgot?</a></span>
+         </div>
+      </form>
+   </div>
+
+   <script>
+      var modal = document.getElementById('id01');
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+         if (event.target == modal) {
+            modal.style.display = "none";
+         }
+      }
+   </script>
 
    <div class="navbar">
       <ul class="nav-links">
@@ -41,91 +89,6 @@
 
 
    <h1 style="text-align: center"> 欢迎使用 你电图书管理系统！</h1>
-   <h1 style="text-align: center"> Welcome to this Library Managment System!</h1>
-   <h2 style="text-align: center"> 你好，华电！</h2>
-   <h2 style="text-align: center"> Hello from NCEPU!</h2>
-   <hr />
-   <h3 style="text-align: center"> Hello Nana! wish u happy~ &#x1F609</h3>
-   <hr />
-   <button style="display: block; margin: 0 auto; padding: 30px 60px; font-size: 66px;" id="fetchDate">
-      Click ME!
-   </button>
-   <p class="main" id="main_text" style="text-align: center; font-size: 30px"></p>
-   <script src="./scripts/helloworld.js"></script>
-
-   <!------------------------------------------------------------------------------->
-   <hr />
-
-   <div style="margin: 30px; display: flex; justify-content: center; align-items: center; gap: 5px;">
-      <input style="text-align: center;" placeholder="plz input a num, or not" id='input_demo' type="text">
-      <button type="button" onclick="isNumber()">
-         这是数字么? isNumber?
-      </button>
-   </div>
-   <script src="./scripts/isNumber.js"></script>
-
-
-   <!------------------------------------------------------------------------------->
-   <hr />
-
-   <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
-      <form style="margin-top: 30px" id="login-form">
-         <div class="form-group">
-            <label for="username">用户名/User:</label>
-            <input type="text" id="username" name="username" required>
-            <span class="required">*</span>
-            <div id="username-error" class="error-message"></div>
-         </div>
-
-         <div class="form-group">
-            <label for="password">密码/Code:</label>
-            <input type="password" id="password" name="password" required>
-            <span class="required">*</span>
-            <div id="password-error" class="error-message"></div>
-         </div>
-
-         <div class="form-group">
-            <label for="email-input">email:</label>
-            <input type="email" id="email-input" name="email" required>
-            <span class="required">*</span>
-            <div id="email-error" class="error-message"></div>
-         </div>
-
-         <div class="button-container">
-            <button type="submit">登录/sign in</button>
-         </div>
-         <p style="color: green;"> u can input something, and nothing will happen, because i didn't code it www </p>
-      </form>
-   </div>
-   <script src="./scripts/login-check.js"></script>
-
-   <!------------------------------------------------------------------------------->
-   <hr />
-
-   <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-      <h1 style="margin-bottom: 0">简单的前后端交互示例</h1>
-      <h3 style="margin-top: 0">a simple interaction from front-end to back-end on my server</h3>
-      <button id="execute" title="前后端交互">点击执行/Execute!</button>
-      <p style="text-align: left; margin-left: 150px;" id="result"></p>
-   </div>
-   <script src="./scripts/call_backEnd.js"></script>
-
-   <!------------------------------------------------------------------------------->
-   <hr />
-
-   <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-      <button id='music'>fetch and play mus!c</button>
-      <audio id="audio-player" controls></audio>
-      <script src="./scripts/fetch-music.js"></script>
-   </div>
-
-   <!------------------------------------------------------------------------------->
-   <hr />
-
-   <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-      <p style="text-align: center;" id="async_demo">0</p>
-      <script src="./scripts/try_async.js"></script>
-   </div>
 
    <a href="#top" style="display: flex; justify-content: right;">up</a>
 
