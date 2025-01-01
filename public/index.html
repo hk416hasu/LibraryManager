@@ -42,35 +42,35 @@
    </div>
 
    <div id="id01" class="modal">
-      <form class="modal-content animate" id="login-form" action="/api/login" method="POST">
+      <form class="modal-content animate" id="login-form">
          <div class="imgcontainer">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
          </div>
 
          <div class="login-container">
             <div style="display: flex">
-               <label for="uname"><b>Username</b></label>
+               <label for="uname"><b>用户名</b></label>
                <span class="required">*</span>
                <div id="username-error" class="error-message"></div>
             </div>
             <input type="text" id="username" placeholder="Enter Username" name="username" required>
 
             <div style="display: flex">
-               <label for="psw"><b>Password</b></label>
+               <label for="psw"><b>密码</b></label>
                <span class="required">*</span>
                <div id="password-error" class="error-message"></div>
             </div>
             <input type="password" id="password" placeholder="Enter Password" name="password" required>
 
-            <button type="submit">Login</button>
+            <button type="submit">登录</button>
             <label>
-               <input type="checkbox" checked="checked" name="remember"> Remember me
+               <input type="checkbox" checked="checked" name="remember"> 记住我
             </label>
          </div>
 
          <div class="login-container" style="background-color:#f1f1f1">
-            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-            <span class="psw"><a href="#">Forgot?</a></span>
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">取消</button>
+            <span class="psw"><a href="/404.html">忘记密码?</a></span>
          </div>
       </form>
    </div>
