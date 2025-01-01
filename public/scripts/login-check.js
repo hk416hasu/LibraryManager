@@ -1,7 +1,6 @@
 function validateForm() {
    const username = document.getElementById('username').value;
    const password = document.getElementById('password').value;
-   const email = document.getElementById('email-input').value;
 
    let isValid = true;
 
@@ -23,15 +22,6 @@ function validateForm() {
       isValid = false;
    } else {
       passwordError.textContent = '';
-   }
-
-   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   const emailError = document.getElementById('email-error');
-   if (!emailRegex.test(email)) {
-      emailError.textContent = 'Email is NOT valid';
-      isValid = false;
-   } else {
-      emailError.textContent = '';
    }
 
    return isValid;

@@ -4,7 +4,8 @@ const path = require('path');
 
 function startServer(rootPath) {
 
-   app.use(express.json());
+   app.use(express.json()); // analyze json
+   app.use(express.urlencoded({ extended: true })); // analyze form-data
 
    app.use((req, res, next) => {
       console.log(`Request received: ${req.method} ${req.url}`);

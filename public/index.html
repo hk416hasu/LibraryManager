@@ -7,6 +7,11 @@
    <link rel="stylesheet" type="text/css" href="./css/login.css">
    <link rel="stylesheet" href="./css/navigation.css">
    <style>
+      body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+      }
       p.main {text-align: center; font-size: 30px;}
    </style>
    <script src="./scripts/crypto-js.min.js"></script>
@@ -27,30 +32,35 @@
             style="margin-left: 3px; text-decoration: none; color: #0075cb;">
             登录
          </a>
+         <p style="margin-left: 3px;">或</p>
+         <a href="javascript:void(0)"
+            onclick="document.getElementById('id01').style.display='block'"
+            style="margin-left: 3px; text-decoration: none; color: #0075cb;">
+            注册
+         </a>
       </div>
    </div>
 
    <div id="id01" class="modal">
-
-      <form class="modal-content animate" action="/action_page.php" method="post">
+      <form class="modal-content animate" id="login-form" action="/api/login" method="POST">
          <div class="imgcontainer">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
          </div>
 
-         <div class="container">
+         <div class="login-container">
             <div style="display: flex">
                <label for="uname"><b>Username</b></label>
                <span class="required">*</span>
                <div id="username-error" class="error-message"></div>
             </div>
-            <input type="text" placeholder="Enter Username" name="uname" required>
+            <input type="text" id="username" placeholder="Enter Username" name="username" required>
 
             <div style="display: flex">
                <label for="psw"><b>Password</b></label>
                <span class="required">*</span>
                <div id="password-error" class="error-message"></div>
             </div>
-            <input type="password" placeholder="Enter Password" name="psw" required>
+            <input type="password" id="password" placeholder="Enter Password" name="password" required>
 
             <button type="submit">Login</button>
             <label>
@@ -58,13 +68,14 @@
             </label>
          </div>
 
-         <div class="container" style="background-color:#f1f1f1">
+         <div class="login-container" style="background-color:#f1f1f1">
             <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
             <span class="psw"><a href="#">Forgot?</a></span>
          </div>
       </form>
    </div>
 
+   <script src="./scripts/login-check.js"></script>
    <script>
       var modal = document.getElementById('id01');
 
@@ -76,16 +87,20 @@
       }
    </script>
 
+<!------------------------------------------------------------------------------>
+
    <div class="navbar">
       <ul class="nav-links">
          <li><a href="/index.html">首页</a></li>
-         <li><a href="/404.html">馆藏查询</a></li>
-         <li><a href="/404.html">资源荐购</a></li>
-         <li><a href="/404.html">个人信息</a></li>
+         <li><a href="/search.html">馆藏查询</a></li>
+         <li><a href="/recommend.html">资源荐购</a></li>
+         <li><a href="/userinfo.html">个人信息</a></li>
       </ul>
       <p id="date_output" style="margin: 0;"></p>
       <script src="./scripts/updateTime.js"></script>
    </div>
+
+<!------------------------------------------------------------------------------>
 
 
    <h1 style="text-align: center"> 欢迎使用 你电图书管理系统！</h1>
