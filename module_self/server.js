@@ -25,6 +25,9 @@ function startServer(rootPath) {
    const loginRouter = require('./routes/login.js');
    app.use('/api/login', loginRouter);
 
+   const registerRouter = require('./routes/register.js');
+   app.use('/api/register', registerRouter);
+
    app.use((req, res, next) => {
       res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
    });
