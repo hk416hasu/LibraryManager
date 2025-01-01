@@ -21,6 +21,10 @@ function startServer(rootPath) {
    const emailRouter = require('./routes/email.js');
    app.use('/api/email', emailRouter);
 
+   // TODO: clientId[] uuidv4()
+   const loginRouter = require('./routes/login.js');
+   app.use('/api/login', loginRouter);
+
    app.use((req, res, next) => {
       res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
    });
