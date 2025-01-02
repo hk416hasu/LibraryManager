@@ -29,9 +29,9 @@ server {
 
 
     # 处理静态文件
-    # location /static/ {
-    #     root /home/ubuntu/web/public; # should in ~/web/public/static
-    # }
+    location ~ ^/(html|css|scripts|audio|images|doc)/ {
+        root /home/ubuntu/web/public;
+    }
 
     # 转发 API 请求到 Express 应用
     location /api/ {
