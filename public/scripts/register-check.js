@@ -99,7 +99,7 @@ document.getElementById('register-form').addEventListener('submit', async (event
          window.location.reload();
       } else {
          console.error('注册失败');
-         alert('注册失败，请修改用户名\u{1f605}');
+         alert('注册失败，用户名重复\u{1f623}');
       }
    } catch (error) {
       console.error('请求出错:', error);
