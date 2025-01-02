@@ -29,7 +29,7 @@ function startServer(rootPath) {
    app.use('/api/register', registerRouter);
 
    app.use((req, res, next) => {
-      res.status(404).sendFile(path.join(rootPath, 'public', 'html', '404.html'));
+      res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
    });
 
    app.use((err, req, res, next) => {
