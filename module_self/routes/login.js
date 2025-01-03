@@ -28,6 +28,7 @@ router.post('', (req, res) => {
          res.status(200).json({
             message: 'User authenticated',
             authority_num: results[0].authority_num,
+            username: results[0].username,
          });
       } else {
          res.status(401).send('Invalid username or password');
