@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta content="width=device-width, initial-scale=1">
+   <title>资源荐购</title>
+   <link rel="stylesheet" href="./css/login.css">
+   <link rel="stylesheet" href="./css/navigation.css">
+   <link rel="stylesheet" href="./css/recommend.css">
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+      }
+   </style>
+</head>
+
+<body>
+
+   <!------------------------------- HEADER START ---------------------------------->
+   <script src="./scripts/crypto-js.min.js"></script>
+
+   <div id="top" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #f5f5f5;">
+      <div style="display: flex; font-size: 36px;">
+         <p style="color: #0075cb; margin: 0; margin-left: 110px;">你</p>
+         <p style="margin: 0;">好华</p>
+         <p style="color: #0075cb; margin: 0;">电</p>
+         <p style="margin: 0;">图书管理系统</p>
+      </div>
+      <div id="login-box" style="display: flex; align-items: center; margin: 0; margin-right: 50px; font-size: 18px;">
+         <p style="margin: 0;">hi, 请</p>
+         <a href="javascript:void(0)"
+            onclick="document.getElementById('id01').style.display='block'"
+            style="margin-left: 3px; text-decoration: none; color: #0075cb;">
+            登录
+         </a>
+         <p style="margin-left: 3px;">或</p>
+         <a href="javascript:void(0)"
+            onclick="document.getElementById('registerDiv').style.display='block'"
+            style="margin-left: 3px; text-decoration: none; color: #0075cb;">
+            注册
+         </a>
+      </div>
+   </div>
+
+<!------------------------------------------------------------------------------>
+
+   <div id="id01" class="modal">
+      <form class="modal-content animate" id="login-form">
+         <div class="imgcontainer">
+            <span><strong>登录</strong></span>
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+         </div>
+
+         <div class="login-container">
+            <div style="display: flex">
+               <label for="uname"><b>用户名</b></label>
+               <span class="required">*</span>
+               <div id="username-error" class="error-message"></div>
+            </div>
+            <input type="text" id="username" placeholder="Enter Username" name="username" required>
+
+            <div style="display: flex">
+               <label for="psw"><b>密码</b></label>
+               <span class="required">*</span>
+               <div id="password-error" class="error-message"></div>
+            </div>
+            <input type="password" id="password" placeholder="Enter Password" name="password" required>
+
+            <button type="submit">登录</button>
+            <!--
+               <label>
+               <input type="checkbox" checked="checked" name="remember"> 记住我
+               </label>
+            -->
+         </div>
+
+         <div class="login-container" style="background-color:#f1f1f1">
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">取消登录</button>
+            <span class="psw"><a href="/404.html">忘记密码?</a></span>
+         </div>
+      </form>
+   </div>
+
+   <script src="./scripts/login-check.js"></script>
+
+<!------------------------------------------------------------------------------>
+
+   <div id="registerDiv" class="modal">
+      <form class="modal-content animate" id="register-form">
+         <div class="imgcontainer">
+            <span><strong>注册</strong></span>
+            <span onclick="document.getElementById('registerDiv').style.display='none'" class="close" title="关闭注册页面">&times;</span>
+         </div>
+
+         <div class="login-container">
+            <div style="display: flex">
+               <label for="register-username"><b>用户名</b></label>
+               <span class="required">*</span>
+               <div id="register-username-error" class="error-message"></div>
+            </div>
+            <input type="text" id="register-username" placeholder="Enter Username" name="username" required>
+
+            <div style="display: flex">
+               <label for="psw"><b>密码</b></label>
+               <span class="required">*</span>
+               <div id="register-password-error" class="error-message"></div>
+            </div>
+            <input type="password" id="register-password" placeholder="Enter Password" name="password" required>
+
+            <div style="display: flex">
+               <label for="psw"><b>确认密码</b></label>
+               <span class="required">*</span>
+               <div id="register-again-password-error" class="error-message"></div>
+            </div>
+            <input type="password" id="register-again-password" placeholder="Enter Password again" name="again-password" required>
+
+            <div style="display: flex">
+               <label for="email"><b>email</b></label>
+               <span class="required">*</span>
+               <div id="register-email-error" class="error-message"></div>
+            </div>
+            <input type="text" id="register-email" placeholder="Enter Email" name="email" required>
+
+            <div style="display: flex">
+               <label for="tel"><b>手机号</b></label>
+               <span class="required">*</span>
+               <div id="register-tel-error" class="error-message"></div>
+            </div>
+            <input type="text" id="register-tel" placeholder="Enter telephone" name="tel" required>
+
+            <button type="submit">注册</button>
+         </div>
+
+         <div class="login-container" style="background-color:#f1f1f1">
+            <button type="button" onclick="document.getElementById('registerDiv').style.display='none'" class="cancelbtn">取消注册</button>
+            <span class="psw"><a href="/404.html">已有帐户?</a></span>
+         </div>
+      </form>
+   </div>
+
+   <script src="./scripts/register-check.js"></script>
+   <script>
+   //    // When the user clicks anywhere outside of the modal, close it
+   //    var modal_register = document.getElementById('registerDiv');
+   //    window.onclick = function(event) {
+   //       if (event.target == modal_register) {
+   //          modal_register.style.display = "none";
+   //       }
+   //    }
+   </script>
+
+
+<!------------------------------------------------------------------------------>
+
+   <div class="navbar">
+      <ul class="nav-links" id="nav-links"></ul>
+      <p id="date_output" style="margin: 0;"></p>
+      <script src="./scripts/updateTime.js"></script>
+      <script src="./scripts/dynamicNavlinks.js"></script>
+   </div>
+
+<!-------------------------------- HEADER END ----------------------------------->
+
+
+   <nav>
+      <ul>
+         <li><button onclick="showSection('bookForm')">图书荐购</button></li>
+         <li><button onclick="showSection('journalForm')">期刊荐购</button></li>
+         <li><button onclick="showSection('records')">荐购记录</button></li>
+      </ul>
+   </nav>
+   <div class="content">
+      <div id="bookForm" class="section">
+         <h1 style="text-align: center">图书荐购！</h1>
+         <form>
+
+            <label>书名
+               <span class="required">*</span>
+               <input type="text" id="book-title" placeholder="enter bookTitle" required>
+            </label>
+
+            <label>ISBN
+               <span class="required">*</span>
+               <input type="text" id="ISBN" placeholder="enter ISBN" required>
+            </label>
+
+            <label>出版社
+               <span class="required">*</span>
+               <input type="text" id="book-press" placeholder="enter press" required>
+            </label>
+
+            <label>作者
+               <span class="required">*</span>
+               <input type="text" id="book-author" placeholder="enter author" required>
+            </label>
+
+            <label>Subject
+               <textarea id="book-recommend-reason" placeholder="Write your recommend reason.." style="height:200px"></textarea>
+            </label>
+
+            <input type="submit" value="Submit">
+
+         </form>
+      </div>
+
+      <div id="journalForm" class="section" style="display: none;">
+         <h1 style="text-align: center">期刊荐购！</h1>
+         <form>
+            <!-- 期刊表单内容 -->
+         </form>
+      </div>
+
+      <div id="records" class="section" style="display: none;">
+         <h1 style="text-align: center">荐购记录！</h1>
+         <p style="text-align: center">这里显示用户荐购的历史记录。</p>
+      </div>
+   </div>
+   <script>
+      function showSection(id) {
+         const sections = document.querySelectorAll('.section');
+         sections.forEach(section => section.style.display = 'none');
+         document.getElementById(id).style.display = 'block';
+      }
+   </script>
+</body>
+</html>

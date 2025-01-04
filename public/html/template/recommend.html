@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta content="width=device-width, initial-scale=1">
+   <title>资源荐购</title>
+   <link rel="stylesheet" href="./css/login.css">
+   <link rel="stylesheet" href="./css/navigation.css">
+   <link rel="stylesheet" href="./css/recommend.css">
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+      }
+   </style>
+</head>
+
+<body>
+
+   <!-- header -->
+
+   <nav>
+      <ul>
+         <li><button onclick="showSection('bookForm')">图书荐购</button></li>
+         <li><button onclick="showSection('journalForm')">期刊荐购</button></li>
+         <li><button onclick="showSection('records')">荐购记录</button></li>
+      </ul>
+   </nav>
+   <div class="content">
+      <div id="bookForm" class="section">
+         <h1 style="text-align: center">图书荐购！</h1>
+         <form>
+
+            <label>书名
+               <span class="required">*</span>
+               <input type="text" id="book-title" placeholder="enter bookTitle" required>
+            </label>
+
+            <label>ISBN
+               <span class="required">*</span>
+               <input type="text" id="ISBN" placeholder="enter ISBN" required>
+            </label>
+
+            <label>出版社
+               <span class="required">*</span>
+               <input type="text" id="book-press" placeholder="enter press" required>
+            </label>
+
+            <label>作者
+               <span class="required">*</span>
+               <input type="text" id="book-author" placeholder="enter author" required>
+            </label>
+
+            <label>Subject
+               <textarea id="book-recommend-reason" placeholder="Write your recommend reason.." style="height:200px"></textarea>
+            </label>
+
+            <input type="submit" value="Submit">
+
+         </form>
+      </div>
+
+      <div id="journalForm" class="section" style="display: none;">
+         <h1 style="text-align: center">期刊荐购！</h1>
+         <form>
+            <!-- 期刊表单内容 -->
+         </form>
+      </div>
+
+      <div id="records" class="section" style="display: none;">
+         <h1 style="text-align: center">荐购记录！</h1>
+         <p style="text-align: center">这里显示用户荐购的历史记录。</p>
+      </div>
+   </div>
+   <script>
+      function showSection(id) {
+         const sections = document.querySelectorAll('.section');
+         sections.forEach(section => section.style.display = 'none');
+         document.getElementById(id).style.display = 'block';
+      }
+   </script>
+</body>
+</html>

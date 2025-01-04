@@ -1,0 +1,69 @@
+nav {
+   float: left; /* 让导航栏浮动到左侧 */
+   width: 200px;
+   background-color: #f4f4f4;
+   padding: 10px;
+   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+nav ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+}
+nav ul li {
+   margin: 10px 0;
+}
+nav ul li button {
+   width: 100%;
+   padding: 10px;
+   background-color: #007BFF;
+   color: white;
+   border: none;
+   cursor: pointer;
+   border-radius: 4px;
+   text-align: center;
+}
+nav ul li button:hover {
+   background-color: #0056b3;
+}
+.content {
+   margin-left: 210px; /* 确保内容区域不被导航栏覆盖 */
+   padding: 20px;
+   background-color: #fff;
+}
+form {
+   max-width: 600px;
+   margin: 0 auto;
+   padding: 20px;
+   border: 1px solid #ccc;
+   border-radius: 8px;
+   background-color: #fff;
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+label {
+   display: block;
+   margin-bottom: 15px;
+}
+input, textarea {
+   width: 98%;
+   padding: 8px;
+   margin-top: 5px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+}
+input[type="submit"] {
+   background-color: #28a745;
+   color: white;
+   font-weight: bold;
+   font-size: 15px;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 4px;
+   cursor: pointer;
+}
+input[type="submit"]:hover {
+   background-color: #218838;
+}
+.required {
+   color: red;
+}
