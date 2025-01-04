@@ -22,15 +22,15 @@
 
    <nav>
       <ul>
-         <li><button onclick="showSection('bookForm')">图书荐购</button></li>
-         <li><button onclick="showSection('journalForm')">期刊荐购</button></li>
-         <li><button onclick="showSection('records')">荐购记录</button></li>
+         <li><button onclick="showSection('bookFormDiv')">图书荐购</button></li>
+         <li><button onclick="showSection('journalFormDiv')">期刊荐购</button></li>
+         <li><button onclick="showSection('recordsDiv')">荐购记录</button></li>
       </ul>
    </nav>
    <div class="content">
-      <div id="bookForm" class="section">
+      <div id="bookFormDiv" class="section">
          <h1 style="text-align: center">图书荐购！</h1>
-         <form>
+         <form id="bookForm">
 
             <label>书名
                <span class="required">*</span>
@@ -61,14 +61,14 @@
          </form>
       </div>
 
-      <div id="journalForm" class="section" style="display: none;">
+      <div id="journalFormDiv" class="section" style="display: none;">
          <h1 style="text-align: center">期刊荐购！</h1>
-         <form>
+         <form id="journalForm">
             <!-- 期刊表单内容 -->
          </form>
       </div>
 
-      <div id="records" class="section" style="display: none;">
+      <div id="recordsDiv" class="section" style="display: none;">
          <h1 style="text-align: center">荐购记录！</h1>
          <p style="text-align: center">这里显示用户荐购的历史记录。</p>
       </div>
@@ -80,5 +80,6 @@
          document.getElementById(id).style.display = 'block';
       }
    </script>
+   <script src="./scripts/recommend.js"></script>
 </body>
 </html>
