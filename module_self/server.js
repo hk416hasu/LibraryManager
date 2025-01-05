@@ -25,6 +25,9 @@ function startServer(rootPath) {
    const loginRouter = require('./routes/login.js');
    app.use('/api/login', loginRouter);
 
+   const libSearchRouter = require('./routes/libSearch.js');
+   app.use('/api/libSearch', libSearchRouter);
+
    const registerRouter = require('./routes/register.js');
    app.use('/api/register', registerRouter);
 

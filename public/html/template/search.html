@@ -20,6 +20,7 @@
 }
 
 .lib-search-container table {
+  table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
@@ -32,6 +33,9 @@
 
 .lib-search-container th, td {
   text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   padding: 10px;
   border: 1px solid #ddd;
 }
@@ -85,6 +89,48 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+      /* 弹窗样式 */
+.popup {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   z-index: 1000;
+   background-color: white;
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+   padding: 20px;
+   width: 400px;
+   border-radius: 8px;
+   display: none;
+}
+
+.popup-content {
+   text-align: center;
+}
+
+.popup-close {
+   position: absolute;
+   top: 10px;
+   right: 10px;
+   cursor: pointer;
+   font-size: 20px;
+}
+
+.hidden {
+   display: none;
+}
+
+.overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   z-index: 999;
+   display: none;
+}
+
 
 </style>
 </head>
@@ -103,6 +149,16 @@ button {
       </div>
 
       <table>
+         <colgroup>
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 15%;">
+            <col style="width: 15%;">
+            <col style="width: 15%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+         </colgroup>
          <thead>
             <tr>
                <th>书名</th>
@@ -110,7 +166,7 @@ button {
                <th>出版社</th>
                <th>ISBN</th>
                <th>索书号</th>
-               <th>剩余数量</th>
+               <th>剩余</th>
                <th>借还</th>
                <th>详情</th>
             </tr>
@@ -120,37 +176,98 @@ button {
          </tbody>
       </table>
    </div>
-   <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // 模拟从后端获取的数据
-  const books = [
-    { title: '大雪中的山庄', author: '东野圭吾', press: '北京十月文艺出版社', isbn: '9787530216835', CLCNum: 'TP312C', callNum: 'D080', leftNum: 1 },
-    { title: '三生三世十里桃花', author: '唐七公子', press: '沈阳出版社', isbn: '9787544113800', CLCNum: 'TS803.23', callNum: 'T007', leftNum: 0 },
-    // 其他图书信息...
-  ];
+   <!-- 弹窗 -->
+<div id="popup" class="popup hidden">
+   <div class="popup-content">
+      <span id="popup-close" class="popup-close">&times;</span>
+      <h2 id="popup-title">书籍详情</h2>
+      <p id="popup-intro"></p>
+   </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+   try {
+      const res = await fetch('/api/libSearch/all');
+      if (res.ok) {
+         const result = await res.json();
+         console.log('获取成功', result);
 
-  const bookList = document.getElementById('book-list');
-  books.forEach(book => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${book.title}</td>
-      <td>${book.author}</td>
-      <td>${book.press}</td>
-      <td>${book.isbn}</td>
-      <td>${book.CLCNum}/${book.callNum}</td>
-      <td>${book.leftNum}</td>
-      <td>
-        <button class="${book.leftNum > 0 ? 'borrow' : 'disabled'}">${book.leftNum > 0 ? '借书' : '不可'}</button>
-      </td>
-      <td>
-        <button class="details">详情</button>
-      </td>
-    `;
-    bookList.appendChild(row);
-  });
+         // Assuming 'result' is an array of books
+         const bookList = document.getElementById('book-list');
+         result.forEach(book => {
+            const row = document.createElement('tr');
+            row.setAttribute('data-title', book.bookTitle); // 存储书名
+            row.setAttribute('data-intro', book.introduction); // 存储详细介绍
+            row.innerHTML = `
+               <td>${book.bookTitle}</td>
+               <td>${book.author}</td>
+               <td>${book.press}</td>
+               <td>${book.ISBN}</td>
+               <td>${book.CLCNum}/${book.callNum}</td>
+               <td>${book.leftNum}</td>
+               <td>
+                  <button class="${book.leftNum > 0 ? 'borrow' : 'disabled'}">${book.leftNum > 0 ? '借书' : '不可'}</button>
+               </td>
+               <td>
+                  <button class="details">详情</button>
+               </td>
+            `;
+            bookList.appendChild(row);
+         });
+      } else {
+         console.log('获取失败');
+      }
+   } catch (err) {
+      console.error('请求出错', err);
+   }
 });
-   </script>
+</script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+   // 获取表格和弹窗元素
+   const table = document.querySelector('#book-list');
+   const popup = document.querySelector('#popup');
+   const popupTitle = document.querySelector('#popup-title');
+   const popupIntro = document.querySelector('#popup-intro');
+   const popupClose = document.querySelector('#popup-close');
+
+   // 为 "详情" 按钮添加点击事件
+   table.addEventListener('click', (event) => {
+      // 判断点击的是否是 "详情" 按钮
+      if (event.target.classList.contains('details')) {
+         // 获取当前行的父级 tr
+         const tr = event.target.closest('tr');
+
+         // 获取书籍信息
+         const bookTitle = tr.getAttribute('data-title');
+         const bookIntro = tr.getAttribute('data-intro');
+
+         // 显示弹窗内容
+         popupTitle.textContent = bookTitle;
+         popupIntro.textContent = bookIntro;
+
+         // 显示弹窗
+         popup.classList.remove('hidden');
+         popup.style.display = 'block';
+      }
+   });
+
+   // 关闭弹窗
+   popupClose.addEventListener('click', () => {
+      popup.classList.add('hidden');
+      popup.style.display = 'none';
+   });
+
+   // 点击弹窗关闭
+   window.addEventListener('click', (event) => {
+      if (event.target === popup) {
+         popup.classList.add('hidden');
+         popup.style.display = 'none';
+      }
+   });
+});
+</script>
 
 </body>
 </html>
