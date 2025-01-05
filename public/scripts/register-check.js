@@ -53,6 +53,17 @@ function validateRegisterForm() {
       telError.textContent = '';
    }
 
+   const sfz = document.getElementById('register-sfz').value;
+   const sfzRegex = /^\d{18}$/;
+   const sfzError = document.getElementById('register-sfz-error');
+   if (!sfzRegex.test(sfz)) {
+      console.log(sfz);
+      sfzError.textContent = '身份证格式错误';
+      isValid = false;
+   } else {
+      sfzError.textContent = '';
+   }
+
    return isValid;
 }
 
@@ -74,6 +85,9 @@ document.getElementById('register-form').addEventListener('submit', async (event
    const passwd = document.getElementById('register-password').value;
    const email = document.getElementById('register-email').value;
    const tel = document.getElementById('register-tel').value;
+   const sfz = document.getElementById('register-sfz').value;
+   const POF = document.getElementById('register-POF').value;
+   const gender = 1;
 
    const hashed_passwd = CryptoJS.SHA256(passwd).toString();
    console.log("your hashed_passwd is : " + hashed_passwd);
@@ -85,10 +99,13 @@ document.getElementById('register-form').addEventListener('submit', async (event
             'Content-Type': 'application/json',
          },
          body: JSON.stringify({
-            username: username,
-            hashed_passwd: hashed_passwd, // 使用哈希后的密码
+            uCode: hashed_passwd, // 使用哈希后的密码
+            userName: username,
+            POF: POF,
+            shenFenZheng: sfz,
+            gender: gender,
+            phoneNumber: tel,
             email: email,
-            tel: tel
          }),
       });
 
@@ -98,8 +115,9 @@ document.getElementById('register-form').addEventListener('submit', async (event
          alert("注册成功: \u{1f60a}");
          window.location.reload();
       } else {
-         console.error('注册失败');
-         alert('注册失败，用户名重复\u{1f623}');
+         const result = await response.json();
+         console.error('注册失败:', result);
+         alert('注册失败\u{1f623}');
       }
    } catch (error) {
       console.error('请求出错:', error);
@@ -108,5 +126,6 @@ document.getElementById('register-form').addEventListener('submit', async (event
       // 清空密码框
       document.getElementById('register-password').value = '';
       document.getElementById('register-again-password').value = '';
+      document.getElementById('register-sfz').value = '';
    }
 });

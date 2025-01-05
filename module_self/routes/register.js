@@ -1,47 +1,49 @@
 const express = require('express');
 const router = express.Router();
-const mysql2 = require('mysql2');
-
-const pool = mysql2.createPool({
-   host: 'localhost',
-   user: 'hk416hasu',
-   password: '12345678hhh',
-   database: 'test_db',
-});
+const { execFile } = require('child_process');
+const path = require('path');
+const fs = require('fs');
 
 router.post('', (req, res) => {
-   const { username, hashed_passwd, email, tel } = req.body;
+   console.log(req.body);
 
-   console.log("username is : " + username);
-   console.log("hashed_passwd is : " + hashed_passwd);
+   const elfPath = './build/main';
+   const jsonPath = './build/data.json';
 
-   const query = `SELECT * FROM users WHERE username = ?`;
+   const modifiedBody = {
+      ...req.body,
+      method: 'just_print'  // 添加方法
+   };
 
-   // 查重
-   pool.execute(query, [username], (err, results) => {
+   fs.writeFile(jsonPath, JSON.stringify(modifiedBody), 'utf8', (err) => {
       if (err) {
-         console.error('Database query error: ', err);
-         return res.status(500).json({ error: 'Database error' });
+         console.error('写入文件时出错：', err);
+         res.status(500).json({ err: 'Internal Server Error', message: err.message });
+         return;
       }
+      console.log('JSON 数据已成功保存');
 
-      console.log(err);
-      console.log(results);
-      console.log(results.length);
+      execFile(elfPath, [jsonPath], (error, stdout, stderr) => {
+         if (error) {
+            console.error(`Error: ${error.message}`);
+            res.status(500).json({ error: 'Internal Server Error', message: error.message });
+            return;
+         }
 
-      if (results.length == 0) {
-         const insertQuery = `INSERT INTO users (username, hashed_passwd) VALUES (?, ?)`;
-         pool.execute(insertQuery, [username, hashed_passwd], (err, results) => {
-            if (err) {
-               console.error('Error inserting user: ', err);
-               return res.status(500).json({ error: 'Failed to create user' });
-            }
+         if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            res.status(500).json({ error: 'Internal Server Error', message: stderr });
+            return;
+         }
 
-            console.log('User created successfully: ', results);
-            res.status(201).json({ message: 'User created successfully' });
-         });
-      } else {
-         res.status(409).json({ error: 'Username already exists' });
-      }
+         try {
+            const jsonData = JSON.parse(stdout); // 解析 stdout 为 JSON
+            res.json(jsonData); // 直接发送 JSON 数据给客户端
+         } catch (parseError) {
+            console.error(`JSON Parse Error: ${parseError.message}`);
+            res.status(500).json({ error: 'Invalid JSON format', message: parseError.message });
+         }
+      });
    });
 });
 
