@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
          const ISBN = tr.getAttribute('data-ISBN');
          const callNum = tr.getAttribute('data-callNum');
          const bookTitle = tr.getAttribute('data-title');
-         const uID = localStorage.getItem('username');
+         const uID = localStorage.getItem('uID');
          const userName = localStorage.getItem('username');
 
          console.log(ISBN);
@@ -296,12 +296,38 @@ document.addEventListener('DOMContentLoaded', async () => {
          daysToAdd = 30; // TODO: should get real daysToAdd according to authority_num
          let dueDate = new Date(borrowDate);
          dueDate.setDate(dueDate.getDate() + daysToAdd);
-         // 输出之
-         console.log(borrowDate.toISOString().split('T')[0]);
-         console.log(dueDate.toISOString().split('T')[0]);
 
-         // TODO: try fetch /api/libSearch/borrow
+         try {
+            const response = await fetch('/api/libSearch/borrow', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  ISBN: ISBN,
+                  callNum: callNum,
+                  bookTitle: bookTitle,
+                  uID: uID,
+                  userName: userName,
+                  borrowDate: borrowDate.toISOString().split('T')[0],
+                  dueDate: dueDate.toISOString().split('T')[0],
+               }),
+            });
 
+            if (response.ok) {
+               const result = await response.json();
+               console.log('借书成功:', result);
+               alert(`借书成功😊: ${result.message}`);
+               window.location.reload();
+            } else {
+               const result = await response.json();
+               console.error('借书失败:', result);
+               alert(`借书失败\u{1f623} ${result.message}`);
+            }
+         } catch (error) {
+            console.error('请求出错:', error);
+            alert('借书时发生错误，请稍后重试');
+         }
       }
    });
 });

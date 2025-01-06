@@ -8,7 +8,7 @@ CFLAGS =
 TARGET = ./main
 
 # source files
-SRCS = main.c guanxin.cpp
+SRCS = main.c guanxin.cpp yixuan.cpp
 
 $(TARGET): $(SRCS) # Dependency
 	$(cc) $(CFLAGS) $(SRCS) -o $(TARGET) -lmysqlclient
