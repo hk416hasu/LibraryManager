@@ -57,7 +57,6 @@ function validateRegisterForm() {
    const sfzRegex = /^\d{18}$/;
    const sfzError = document.getElementById('register-sfz-error');
    if (!sfzRegex.test(sfz)) {
-      console.log(sfz);
       sfzError.textContent = '身份证格式错误';
       isValid = false;
    } else {
@@ -87,7 +86,7 @@ document.getElementById('register-form').addEventListener('submit', async (event
    const tel = document.getElementById('register-tel').value;
    const sfz = document.getElementById('register-sfz').value;
    const POF = document.getElementById('register-POF').value;
-   const gender = 1;
+   const gender = "1";
 
    const hashed_passwd = CryptoJS.SHA256(passwd).toString();
    console.log("your hashed_passwd is : " + hashed_passwd);
@@ -101,7 +100,7 @@ document.getElementById('register-form').addEventListener('submit', async (event
          body: JSON.stringify({
             uCode: hashed_passwd, // 使用哈希后的密码
             userName: username,
-            POF: POF,
+            POFNum: POF,
             shenFenZheng: sfz,
             gender: gender,
             phoneNumber: tel,
@@ -112,12 +111,12 @@ document.getElementById('register-form').addEventListener('submit', async (event
       if (response.ok) {
          const result = await response.json();
          console.log('注册成功:', result);
-         alert("注册成功: \u{1f60a}");
+         alert(`注册成功: 😊 用户ID: ${result.uID}`);
          window.location.reload();
       } else {
          const result = await response.json();
          console.error('注册失败:', result);
-         alert('注册失败\u{1f623}');
+         alert(`注册失败\u{1f623} ${result.message}`);
       }
    } catch (error) {
       console.error('请求出错:', error);

@@ -12,7 +12,7 @@ router.post('', (req, res) => {
 
    const modifiedBody = {
       ...req.body,
-      method: 'just_print'  // 添加方法
+      method: 'register'  // 添加方法字段
    };
 
    fs.writeFile(jsonPath, JSON.stringify(modifiedBody), 'utf8', (err) => {
@@ -38,7 +38,11 @@ router.post('', (req, res) => {
 
          try {
             const jsonData = JSON.parse(stdout); // 解析 stdout 为 JSON
-            res.json(jsonData); // 直接发送 JSON 数据给客户端
+            if (jsonData.status === "success") {
+               res.status(200).json(jsonData);
+            } else {
+               res.status(400).json(jsonData);
+            }
          } catch (parseError) {
             console.error(`JSON Parse Error: ${parseError.message}`);
             res.status(500).json({ error: 'Invalid JSON format', message: parseError.message });

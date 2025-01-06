@@ -1,6 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include "json.hpp"
+#include "global.h"
 
 using json = nlohmann::json;
 
@@ -42,8 +40,10 @@ int main(int argc, char *argv[]) {
    std::string method = j["method"];
    if (method == "just_print") {
       printJsonObject(j);
-   } else if (false) {
-
+   } else if (method == "register") {
+      jsonSignUp(j);
+   } else if (method == "login") {
+      jsonSignIn(j);
    }
 
    return 0;

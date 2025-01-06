@@ -47,8 +47,8 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
             'Content-Type': 'application/json',
          },
          body: JSON.stringify({
-            username: username,
-            hashed_passwd: hashed_passwd, // 使用哈希后的密码
+            uID: username,
+            uCode: hashed_passwd, // 使用哈希后的密码
          }),
       });
 
@@ -58,13 +58,13 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
          localStorage.setItem('username', result.username);
          console.log("your authority_num is: " + result.authority_num);
          localStorage.setItem('authority_num', result.authority_num);
-         // TODO: should get real uID here
-         localStorage.setItem('uID', 10000001);
+         localStorage.setItem('uID', result.uID);
          alert("登录成功: \u{1f60a}");
          window.location.reload();
       } else {
-         console.error('登录失败');
-         alert('登录失败，请检查用户名或密码\u{1f605}');
+         const result = await response.json();
+         console.log('登录失败: ' + result.message);
+         alert('登录失败，请检查用户ID或密码\u{1f605}');
       }
    } catch (error) {
       console.error('请求出错:', error);

@@ -7,4 +7,6 @@ log
 server.log
 build/*
 !build/**/*.c
+!build/**/*.cpp
+!build/**/*.h
 !build/**/Makefile
