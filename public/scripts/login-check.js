@@ -58,6 +58,8 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
          localStorage.setItem('username', result.username);
          console.log("your authority_num is: " + result.authority_num);
          localStorage.setItem('authority_num', result.authority_num);
+         // TODO: should get real uID here
+         localStorage.setItem('uID', 10000001);
          alert("登录成功: \u{1f60a}");
          window.location.reload();
       } else {
@@ -89,6 +91,7 @@ function welcomeLoginedUser() {
 function logout() {
    localStorage.removeItem('username');
    localStorage.removeItem('authority_num');
+   localStorage.removeItem('uID');
    // localStorage.removeItem('uid');
    window.location.reload();
    window.location.href = '/';

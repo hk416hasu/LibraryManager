@@ -23,9 +23,6 @@ document.getElementById('bookForm').addEventListener('submit', async (event) => 
       return;
    }
 
-   // TODO: for test
-   localStorage.setItem('uID', 1001);
-
    const bookTitle = document.getElementById('book-title').value;
    const ISBN = document.getElementById('ISBN').value;
    const Press = document.getElementById('book-press').value;

@@ -167,7 +167,7 @@ button {
                <th>ISBN</th>
                <th>索书号</th>
                <th>剩余</th>
-               <th>借还</th>
+               <th>借阅</th>
                <th>详情</th>
             </tr>
          </thead>
@@ -198,6 +198,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const row = document.createElement('tr');
             row.setAttribute('data-title', book.bookTitle); // 存储书名
             row.setAttribute('data-intro', book.introduction); // 存储详细介绍
+            row.setAttribute('data-ISBN', book.ISBN); // 存储ISBN
+            row.setAttribute('data-callNum', book.callNum);
             row.innerHTML = `
                <td>${book.bookTitle}</td>
                <td>${book.author}</td>
@@ -264,6 +266,42 @@ document.addEventListener('DOMContentLoaded', () => {
       if (event.target === popup) {
          popup.classList.add('hidden');
          popup.style.display = 'none';
+      }
+   });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+   const table = document.querySelector('#book-list');
+
+   table.addEventListener('click', async (event) => {
+      if (event.target.classList.contains('borrow')) {
+
+         console.log('点击了borrow按键');
+
+         const tr = event.target.closest('tr');
+
+         const ISBN = tr.getAttribute('data-ISBN');
+         const callNum = tr.getAttribute('data-callNum');
+         const bookTitle = tr.getAttribute('data-title');
+         const uID = localStorage.getItem('username');
+         const userName = localStorage.getItem('username');
+
+         console.log(ISBN);
+
+         // 计算借阅日期 与 应还日期
+         const borrowDateStr = new Date().toISOString().split('T')[0];
+         let borrowDate = new Date(borrowDateStr);
+         daysToAdd = 30; // TODO: should get real daysToAdd according to authority_num
+         let dueDate = new Date(borrowDate);
+         dueDate.setDate(dueDate.getDate() + daysToAdd);
+         // 输出之
+         console.log(borrowDate.toISOString().split('T')[0]);
+         console.log(dueDate.toISOString().split('T')[0]);
+
+         // TODO: try fetch /api/libSearch/borrow
+
       }
    });
 });
