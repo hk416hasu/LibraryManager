@@ -108,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async () => {
          const result = await res.json();
          console.log('获取成功', result);
 
-         // Assuming 'result' is an array of books
          const orderList = document.getElementById('order-list');
          result.forEach(order => {
             const row = document.createElement('tr');
@@ -137,6 +136,116 @@ document.addEventListener('DOMContentLoaded', async () => {
    } catch (err) {
       console.error('请求出错', err);
    }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+   console.log('页面加载完成 - 开始执行');
+   const table = document.querySelector('#order-list');
+   console.log('找到表格，开始绑定事件');
+
+   table.addEventListener('click', async (event) => {
+      if (event.target.classList.contains('accept')) {
+         console.log('点击了验收按键');
+
+         const tr = event.target.closest('tr');
+
+         const Ordernum = tr.getAttribute('data-Ordernum');
+         const username = localStorage.getItem('username');
+
+         // 计算实际日期
+         const returnDateStr = new Date().toISOString().split('T')[0];
+         let returnDate = new Date(returnDateStr);
+
+         try {
+            const response = await fetch('/api_zhao/dingdanyanshou', { // 验收api
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  // 我在这里用你预期的字段传输了你需要的信息
+                  Ordernum: Ordernum,
+                  acceptMan: username,
+                  acceptTime: returnDate.toISOString().split('T')[0],
+               }),
+            });
+
+            console.log('Ordernum: ' + Ordernum);
+            console.log('acceptMan: ' + username);
+            console.log('acceptTime: ' + returnDate.toISOString().split('T')[0]);
+
+            if (response.ok) {
+               const result = await response.json();
+               console.log('验收成功:', result);
+               alert(`验收成功😊: ${result.message}`);
+            } else {
+               const result = await response.json();
+               console.error('验收失败:', result);
+               alert(`验收失败\u{1f623} ${result.message}`);
+            }
+         } catch (error) {
+            console.error('请求出错:', error);
+            alert('验收时发生错误，请稍后重试');
+         } finally {
+            window.location.reload();
+         }
+      }
+   });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+   console.log('页面加载完成 - 开始执行');
+   const table = document.querySelector('#order-list');
+   console.log('找到表格，开始绑定事件');
+
+   table.addEventListener('click', async (event) => {
+      if (event.target.classList.contains('refuse')) {
+         console.log('点击了退货按键');
+
+         const tr = event.target.closest('tr');
+
+         const Ordernum = tr.getAttribute('data-Ordernum');
+
+         // 计算实际日期
+         const returnDateStr = new Date().toISOString().split('T')[0];
+         let returnDate = new Date(returnDateStr);
+
+         try {
+            const response = await fetch('/api_zhao/dingdantuihuo', { // 退货api
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  // 我在这里用你预期的字段传输了你需要的信息
+                  Ordernum: Ordernum,
+                  returnTime: returnDate.toISOString().split('T')[0],
+                  returnReason: "7天无理由",
+               }),
+            });
+
+            console.log('Ordernum: ' + Ordernum);
+            console.log('returnReason: ' + returnDate.toISOString().split('T')[0]);
+
+            if (response.ok) {
+               const result = await response.json();
+               console.log('退货成功:', result);
+               alert(`退货成功😊: ${result.message}`);
+            } else {
+               const result = await response.json();
+               console.error('退货失败:', result);
+               alert(`退货失败\u{1f623} ${result.message}`);
+            }
+         } catch (error) {
+            console.error('请求出错:', error);
+            alert('退货时发生错误，请稍后重试');
+         } finally {
+            window.location.reload();
+         }
+      }
+   });
 });
 </script>
 
