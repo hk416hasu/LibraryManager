@@ -157,9 +157,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-   console.log('页面加载完成 - 开始执行');
+   // console.log('页面加载完成 - 开始执行');
    const table = document.querySelector('#borrow-list');
-   console.log('找到表格，开始绑定事件');
+   // console.log('找到表格，开始绑定事件');
 
    table.addEventListener('click', async (event) => {
       if (event.target.classList.contains('return')) {
@@ -185,6 +185,9 @@ document.addEventListener('DOMContentLoaded', async () => {
          const returnDateStr = new Date().toISOString().split('T')[0];
          let returnDate = new Date(returnDateStr);
 
+         // 判断是否超期，isOver为"1"表示超期, 为"0"表示未超期
+         const isOver = returnDate > dueDate ? "1" : "0";
+
          try {
             const response = await fetch('/api/borrowList/return', {
                method: 'POST',
@@ -200,6 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   borrowDate: mysqlBorrowDate,
                   dueDate: mysqlDueDate,
                   returnDate: returnDate.toISOString().split('T')[0],
+                  isOver: isOver,
                }),
             });
 

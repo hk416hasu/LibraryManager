@@ -104,7 +104,6 @@ MYSQL_RES *store_result() // 储存和获取询问的结果
     }
     return result;
 }
-
 void jsonSignUp(json &j)
 {
   conn = mysql_init(NULL);
@@ -342,7 +341,14 @@ struct user dispInfo(string uID1, string uID2)
     {
         cout << "Invalid uID" << endl;
     }
-    else if (ath.authorityNum == 1)
+    else if (ath.authorityNum == 0)
+    {
+        executeSQL(conn, sql);
+        res = store_result();
+        row = mysql_fetch_row(res);
+        return giveValue(row);
+    }
+    else
     {
         if (uID1 == uID2)
         {
@@ -355,13 +361,6 @@ struct user dispInfo(string uID1, string uID2)
         {
             cout << "Unpermited" << endl;
         }
-    }
-    else if (ath.authorityNum == 0)
-    {
-        executeSQL(conn, sql);
-        res = store_result();
-        row = mysql_fetch_row(res);
-        return giveValue(row);
     }
     return user1;
 }
