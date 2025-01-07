@@ -16,6 +16,7 @@ using json = nlohmann::json;
 #include "guanxin.h"
 #include "yixuan.h"
 #include "ran.h"
-
+#include "tianci.h"
+#include "tianci2.h"
 
 #endif

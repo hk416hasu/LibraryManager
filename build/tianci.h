@@ -1,6 +1,6 @@
 #ifndef TIANCI_H
 #define TIANCI_H
 
-// TODO
+int jsonCancel(json jsonData);
 
 #endif

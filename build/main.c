@@ -17,9 +17,9 @@ int main(int argc, char *argv[]) {
    } else if (method == "return") {
       jsonReturnBook(j);
    } else if (method == "catalog") {
-      // TODO: catalog function
+      jsonCatalog();
    } else if (method == "destroy") {
-      // TODO: destroy function
+      jsonCancel(j);
    }
 
    return 0;
