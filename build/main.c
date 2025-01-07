@@ -15,7 +15,11 @@ int main(int argc, char *argv[]) {
    } else if (method == "borrow") {
       jsonBorrowBook(j);
    } else if (method == "return") {
-      // TODO: return method
+      // TODO: return function
+   } else if (method == "catalog") {
+      // TODO: catalog function
+   } else if (method == "destroy") {
+      // TODO: destroy function
    }
 
    return 0;

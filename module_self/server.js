@@ -34,6 +34,9 @@ function startServer(rootPath) {
    const registerRouter = require('./routes/register.js');
    app.use('/api/register', registerRouter);
 
+   const catalogRouter = require('./routes/catalog.js');
+   app.use('/api/catalog', catalogRouter);
+
    app.use((req, res, next) => {
       res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
    });

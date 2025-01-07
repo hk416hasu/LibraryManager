@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta content="width=device-width, initial-scale=1">
+   <title>你电图书管理系统</title>
+   <link rel="stylesheet" type="text/css" href="./css/login.css">
+   <link rel="stylesheet" href="./css/navigation.css">
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+      }
+   </style>
+   <style>
+   .destroy-container button {
+      display: block;
+      margin: 0 auto;
+      font-size: 36px;
+      color: white;
+      background: red;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+   }
+   .destroy-container input {
+      display: block;
+      margin: 0 auto 10px auto; /* 自动居中并设置下边距 */
+      padding: 10px;
+      font-size: 16px;
+      width: 80%; /* 宽度为容器的80% */
+      max-width: 400px; /* 最大宽度为400px */
+      border: 1px solid #ccc; /* 边框颜色 */
+      border-radius: 4px; /* 圆角 */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+   }
+   .destroy-container input:focus {
+      border-color: #007BFF; /* 聚焦时的边框颜色 */
+      outline: none; /* 去除默认聚焦样式 */
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25); /* 聚焦时的阴影效果 */
+   }
+   </style>
+</head>
+
+<body>
+
+   <!-- header -->
+
+   <h1 style="text-align: center"> 欢迎使用 报损模块！</h1>
+
+   <div class="destroy-container">
+      <input id="ISBN_to_destroy" placeholder="enter ISBN">
+      <button id="destroy-button">报损它😭</button>
+   </div>
+   <script>
+      document.getElementById('destroy-button').addEventListener('click', async () => {
+
+         // ISBN 检查
+         const ISBN = document.getElementById('ISBN_to_destroy').value;
+
+         const ISBN_Regex = /^(978|979)\d{10}$/;
+         if (!ISBN_Regex.test(ISBN)) {
+            alert("ISBN 应为13位数字");
+            document.getElementById('ISBN_to_destroy').value = '';
+            return;
+         }
+
+         try {
+            const response = await fetch('/api/catalog/destroy', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  ISBN: ISBN,
+               }),
+            });
+
+            if (response.ok) {
+               const result = await response.json();
+               console.log('报损成功:', result);
+               alert("报损成功: \u{1f60a}");
+            } else {
+               const result = await response.json();
+               console.log('报损失败: ' + result.message);
+               alert('报损失败\u{1f605}:' + result.message);
+            }
+         } catch (error) {
+            console.error('请求出错:', error);
+            alert('报损时发生错误，请稍后重试');
+         }
+      });
+   </script>
+</body>
+
+</html>
