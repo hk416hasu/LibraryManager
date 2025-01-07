@@ -101,7 +101,7 @@ button {
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-   const username = localStorage.getItem('username');
+   const uID = localStorage.getItem('uID');
    try {
       const res = await fetch('/api/borrowList/getAll', {
          method: 'POST',
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             'Content-Type': 'application/json',
          },
          body: JSON.stringify({
-            username: username,
+            uID: uID,
          }),
       });
 

@@ -12,6 +12,7 @@ using json = nlohmann::json;
 #define GLOBAL_H
 
 #include "guanxin.h"
+#include "yixuan.h"
 
 
 

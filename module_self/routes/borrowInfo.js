@@ -16,11 +16,11 @@ router.post('/getAll', (req, res) => {
 
    console.log('start to get all borrow list');
 
-   const { username } = req.body;
+   const { uID } = req.body;
 
-   const query = `SELECT * FROM borrow_list where userName = ?`;
+   const query = `SELECT * FROM borrow_list where uID = ? and valid = 1`;
 
-   pool.execute(query, [username], (err, results) => {
+   pool.execute(query, [uID], (err, results) => {
       if (err) {
          console.error('Database query error: ', err);
          return res.status(500).json({ error: 'Database error' });

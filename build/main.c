@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
    } else if (method == "login") {
       jsonSignIn(j);
    } else if (method == "borrow") {
-      // TODO
+      jsonBorrowBook(j);
    }
 
    return 0;

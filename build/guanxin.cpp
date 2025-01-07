@@ -44,13 +44,13 @@ struct feedback{
     string message;
     bool status;
 };
-const char *host = "82.156.207.47";
-const char *user = "guanxin";
-const char *passwd = "oilglitch";
-const char *db = "test_liguan";
-MYSQL *conn;                                                                      // 设为全局变量以避免出现Segmentation fault (core dumped)的问题
-MYSQL_RES *res;                                                                   // 同理
-MYSQL_ROW row;                                                                    // 同理
+static const char *host = "82.156.207.47";
+static const char *user = "guanxin";
+static const char *passwd = "oilglitch";
+static const char *db = "test_liguan";
+static MYSQL *conn;                                                                      // 设为全局变量以避免出现Segmentation fault (core dumped)的问题
+static MYSQL_RES *res;                                                                   // 同理
+static MYSQL_ROW row;                                                                    // 同理
 feedback signUp(struct user newUser);                                               // 1注册
 feedback signIn(string uID, string uCode);                                          // 1登录，查找到用户id后检验是否与uCode匹配
 authority getAuthority(string uID);                                               // 1获得对应用户的权限信息
