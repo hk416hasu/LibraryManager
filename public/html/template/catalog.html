@@ -38,6 +38,7 @@
    </div>
    <script>
       document.getElementById('catalog-button').addEventListener('click', async () => {
+         const adminname = localStorage.getItem('username');
          try {
             const response = await fetch('/api/catalog', {
                method: 'POST',
@@ -45,6 +46,7 @@
                   'Content-Type': 'application/json',
                },
                body: JSON.stringify({
+                  adminname: adminname,
                   method: "catalog",
                }),
             });

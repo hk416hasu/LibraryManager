@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta content="width=device-width, initial-scale=1">
+   <title>你电图书管理系统</title>
+   <link rel="stylesheet" type="text/css" href="./css/login.css">
+   <link rel="stylesheet" href="./css/navigation.css">
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+      }
+   </style>
+<style>
+.order-list-container {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.order-list-container table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-list-container thead {
+  color: black;
+}
+
+.order-list-container th, td {
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.order-list-container tr:hover {
+  background-color: #f2f2f2;
+}
+
+button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.order-list-container button.accept {
+  background-color: green;
+  color: white;
+}
+
+.order-list-container button.refuse {
+  background-color: red;
+  color: white;
+}
+
+</style>
+</head>
+
+<body>
+
+   <!-- header -->
+
+   <h1 style="text-align: center"> 欢迎使用 订单管理！</h1>
+
+   <div class="order-list-container">
+      <table>
+         <colgroup>
+            <col style="width: 15%;">
+            <col style="width: 15%;">
+            <col style="width: 15%;">
+            <col style="width: 15%;">
+            <col style="width: 15%;">
+            <col style="width: 15%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+         </colgroup>
+         <thead>
+            <tr>
+               <th>订单号</th>
+               <th>书名</th>
+               <th>ISBN</th>
+               <th>出版社</th>
+               <th>作者</th>
+               <th>订购数</th>
+               <th>验收</th>
+               <th>退货</th>
+            </tr>
+         </thead>
+         <tbody id="order-list">
+            <!-- 借阅信息将通过 JavaScript 动态插入 -->
+         </tbody>
+      </table>
+   </div>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+   try {
+      const res = await fetch('/api/order/getAll');
+
+      if (res.ok) {
+         const result = await res.json();
+         console.log('获取成功', result);
+
+         // Assuming 'result' is an array of books
+         const orderList = document.getElementById('order-list');
+         result.forEach(order => {
+            const row = document.createElement('tr');
+            row.setAttribute('data-Ordernum', order.Ordernum);
+
+            row.innerHTML = `
+               <td>${order.Ordernum}</td>
+               <td>${order.bookTitle}</td>
+               <td>${order.ISBN}</td>
+               <td>${order.Press}</td>
+               <td>${order.author}</td>
+               <td>${order.orderbookNum}</td>
+               <td>
+                  <button class="accept">验收</button>
+               </td>
+               <td>
+                  <button class="refuse">退货</button>
+               </td>
+            `;
+            orderList.appendChild(row);
+         });
+
+      } else {
+         console.log('获取失败');
+      }
+   } catch (err) {
+      console.error('请求出错', err);
+   }
+});
+</script>
+
+</body>
+</html>

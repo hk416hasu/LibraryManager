@@ -37,6 +37,9 @@ function startServer(rootPath) {
    const catalogRouter = require('./routes/catalog.js');
    app.use('/api/catalog', catalogRouter);
 
+   const orderRouter = require('./routes/order.js');
+   app.use('/api/order', orderRouter);
+
    app.use((req, res, next) => {
       res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
    });

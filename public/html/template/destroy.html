@@ -24,7 +24,7 @@
       border-radius: 4px;
       cursor: pointer;
    }
-   .destroy-container input {
+   .destroy-container input, textarea {
       display: block;
       margin: 0 auto 10px auto; /* 自动居中并设置下边距 */
       padding: 10px;
@@ -50,15 +50,18 @@
    <h1 style="text-align: center"> 欢迎使用 报损模块！</h1>
 
    <div class="destroy-container">
-      <input id="ISBN_to_destroy" placeholder="enter ISBN">
+      <input id="ISBN_to_destroy" placeholder="enter ISBN (必填)">
+      <textarea id="destroy_reason" placeholder="enter destroy reason (可以不填)" style="height:200px"></textarea>
       <button id="destroy-button">报损它😭</button>
    </div>
    <script>
       document.getElementById('destroy-button').addEventListener('click', async () => {
 
-         // ISBN 检查
          const ISBN = document.getElementById('ISBN_to_destroy').value;
+         const reason = document.getElementById('destroy_reason').value;
+         const adminname = localStorage.getItem('username');
 
+         // ISBN 检查
          const ISBN_Regex = /^(978|979)\d{10}$/;
          if (!ISBN_Regex.test(ISBN)) {
             alert("ISBN 应为13位数字");
@@ -74,6 +77,8 @@
                },
                body: JSON.stringify({
                   ISBN: ISBN,
+                  reason: reason,
+                  adminname: adminname,
                }),
             });
 
