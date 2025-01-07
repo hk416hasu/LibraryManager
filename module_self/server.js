@@ -40,6 +40,9 @@ function startServer(rootPath) {
    const orderRouter = require('./routes/order.js');
    app.use('/api/order', orderRouter);
 
+   const statisticsRouter = require('./routes/statistics.js');
+   app.use('/api/statistics', statisticsRouter);
+
    app.use((req, res, next) => {
       res.status(404).sendFile(path.join(rootPath, 'public', '404.html'));
    });
