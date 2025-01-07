@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <assert.h>
+#include <stdlib.h>
 
 using json = nlohmann::json;
 
@@ -13,7 +15,7 @@ using json = nlohmann::json;
 
 #include "guanxin.h"
 #include "yixuan.h"
-
+#include "ran.h"
 
 
 #endif
