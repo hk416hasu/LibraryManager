@@ -3,6 +3,8 @@ const router = express.Router();
 const { execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const PDFDocument = require('pdfkit');
+const doc = new PDFDocument();
 
 router.post('', (req, res) => {
    console.log(req.body);
@@ -38,42 +40,56 @@ router.post('', (req, res) => {
 
          try {
             const jsonData = JSON.parse(stdout); // 解析 stdout 为 JSON
-            if (jsonData.status === "success") {
-               // 创建 PDF 并保存到服务器或内存
-               if (Array.isArray(jsonData.array_key)) {
-                  const pdfFilename = `trans_${Date.now()}.pdf`;
-                  const PDFDocument = require('pdfkit');
-                  const doc = new PDFDocument();
 
-                  doc.text('移送清单:', { underline: true }); // Title
-                  jsonData.array_key.forEach((item, index) => {
-
-                     const ISBN = item.ISBN || 'Unknown';
-                     const bookTitle = item.bookTitle || 'Unknown';
-                     const callNum = item.callNum || 'Unknown';
-                     const CLCNum = item.CLCNum || 'Unknown';
-                     const press = item.press || 'Unknown';
-
-                     doc.text(`${index + 1}. 书名: ${bookTitle}, ISBN: ${ISBN}, 索书号: ${CLCNum/callNum}, 出版社: ${press}`);
-                  });
-                  const pdfPath = path.join(__dirname, 'public/doc', pdfFilename);
-                  doc.pipe(fs.createWriteStream(pdfPath)); // 保存到服务器文件
-                  doc.end();
-
-                  // 返回 JSON，附加 PDF 文件的下载链接
-                  res.status(200).json({
-                     ...jsonData,
-                     pdf_url: `/public/doc/${pdfFilename}`,
-                  });
-               } else {
-                  res.status(400).json({ message: 'array_key is missing or not an array' });
-               }
-            } else {
-               res.status(400).json(jsonData);
+            // 检查目标目录是否存在
+            const pdfDir = '/home/ubuntu/web/public/doc';
+            if (!fs.existsSync(pdfDir)) {
+               fs.mkdirSync(pdfDir, { recursive: true });
             }
-         } catch (parseError) {
-            console.error(`JSON Parse Error: ${parseError.message}`);
-            res.status(500).json({ error: 'Invalid JSON format', message: parseError.message });
+
+            // 创建 PDF 并保存到服务器或内存
+            const pdfFilename = `trans_${Date.now()}.pdf`;
+            const pdfPath = path.join(pdfDir, pdfFilename);
+
+            const writeStream = fs.createWriteStream(pdfPath);
+            writeStream.on('finish', () => {
+               console.log('PDF 文件写入成功:', pdfPath);
+            });
+            writeStream.on('error', (err) => {
+               console.error('PDF 写入错误:', err.message);
+               throw err;
+            });
+
+            // 写入内容并结束
+            doc.pipe(writeStream);
+            doc.font('/home/ubuntu/ftp/font.otf').fontSize(20).text('移送清单:').moveDown();
+            jsonData.array_key.forEach((item, index) => {
+               const bookDetails = `
+         ${index + 1}. 书名: ${item.bookTitle || 'Unknown'}
+                       ISBN: ${item.ISBN || 'Unknown'}
+                       索书号: ${item.CLCNum || 'Unknown'}/${item.callNum || 'Unknown'}
+                       出版社: ${item.press || 'Unknown'}
+            `;
+               doc.fontSize(12).text(bookDetails).moveDown();
+            });
+            doc.end();
+
+            // 验证文件是否成功创建
+            if (!fs.existsSync(pdfPath)) {
+               return res.status(500).json({ error: 'PDF file was not created' });
+            }
+
+            // 返回 JSON 数据，附加 PDF 文件链接
+            res.status(200).json({
+               ...jsonData,
+               pdfURL: `/doc/${pdfFilename}`,
+            });
+         } catch (err) {
+            console.error('生成 PDF 失败:', err.message);
+            res.status(500).json({
+               error: 'Failed to generate PDF',
+               message: err.message,
+            });
          }
       });
    });

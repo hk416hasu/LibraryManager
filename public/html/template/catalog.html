@@ -37,6 +37,16 @@
       <button id="catalog-button">是兄弟就来编目</button>
    </div>
    <script>
+
+      function downloadPDF(url) {
+         // 创建一个 <a> 标签
+         const link = document.createElement("a");
+         link.href = url;
+         link.download = ""; // 如果需要自定义文件名，可以指定名字，比如 "file.pdf"
+
+         // 触发点击
+         link.click();
+      }
       document.getElementById('catalog-button').addEventListener('click', async () => {
          const adminname = localStorage.getItem('username');
          try {
@@ -54,6 +64,8 @@
             if (response.ok) {
                const result = await response.json();
                console.log('编目成功:', result);
+               pdfURL = result.pdfURL;
+               downloadPDF(pdfURL);
                alert("编目成功: \u{1f60a}");
             } else {
                const result = await response.json();

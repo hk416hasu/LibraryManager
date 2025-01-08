@@ -786,6 +786,13 @@ int jsonCatalog()
         }
     }
 
+    for (auto& book : historyBooks) {
+       if (book.contains("pressDate")) {
+          book.erase("pressDate");
+          book.erase("introduction");
+       }
+    }
+
     output["array_key"] = historyBooks;
     std::cout << output << std::endl;
     return 1;
