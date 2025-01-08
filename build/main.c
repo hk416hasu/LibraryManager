@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
    } else if (method == "return") {
       jsonReturnBook(j);
    } else if (method == "catalog") {
-      jsonCatalog();
+      // jsonCatalog();
    } else if (method == "destroy") {
       jsonCancel(j);
    } else if (method == "getUserinfo") {
