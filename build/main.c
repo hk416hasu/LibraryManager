@@ -22,6 +22,8 @@ int main(int argc, char *argv[]) {
       jsonCancel(j);
    } else if (method == "getUserinfo") {
       jsonDispInfo(j);
+   } else if (method == "updateAuthority") {
+      // TODO
    }
 
    return 0;
