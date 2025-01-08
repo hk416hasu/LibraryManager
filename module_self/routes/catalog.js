@@ -39,7 +39,35 @@ router.post('', (req, res) => {
          try {
             const jsonData = JSON.parse(stdout); // 解析 stdout 为 JSON
             if (jsonData.status === "success") {
-               res.status(200).json(jsonData);
+               // 创建 PDF 并保存到服务器或内存
+               if (Array.isArray(jsonData.array_key)) {
+                  const pdfFilename = `trans_${Date.now()}.pdf`;
+                  const PDFDocument = require('pdfkit');
+                  const doc = new PDFDocument();
+
+                  doc.text('移送清单:', { underline: true }); // Title
+                  jsonData.array_key.forEach((item, index) => {
+
+                     const ISBN = item.ISBN || 'Unknown';
+                     const bookTitle = item.bookTitle || 'Unknown';
+                     const callNum = item.callNum || 'Unknown';
+                     const CLCNum = item.CLCNum || 'Unknown';
+                     const press = item.press || 'Unknown';
+
+                     doc.text(`${index + 1}. 书名: ${bookTitle}, ISBN: ${ISBN}, 索书号: ${CLCNum/callNum}, 出版社: ${press}`);
+                  });
+                  const pdfPath = path.join(__dirname, 'public/doc', pdfFilename);
+                  doc.pipe(fs.createWriteStream(pdfPath)); // 保存到服务器文件
+                  doc.end();
+
+                  // 返回 JSON，附加 PDF 文件的下载链接
+                  res.status(200).json({
+                     ...jsonData,
+                     pdf_url: `/public/doc/${pdfFilename}`,
+                  });
+               } else {
+                  res.status(400).json({ message: 'array_key is missing or not an array' });
+               }
             } else {
                res.status(400).json(jsonData);
             }

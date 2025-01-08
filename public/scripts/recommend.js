@@ -18,7 +18,7 @@ function validateJournalForm() {
 
    let isValid = true;
 
-   const issnRegex = /^[0-9]{4}-[0-9]{3}[0-9Xx]$/;
+   const issnRegex = /^[0-9]{4}[0-9]{3}[0-9Xx]$/;
    if (!issnRegex.test(ISSN)) {
       alert("ISSN格式错误");
       document.getElementById('ISSN').value = '';
@@ -101,7 +101,7 @@ document.getElementById('journalForm').addEventListener('submit', async (event) 
    const Press = document.getElementById('jou-press').value;
    const uID = localStorage.getItem('uID');
    const recommendTime = new Date().toISOString().split('T')[0];
-   const reason = document.getElementById('jou-recommend-reason').value;
+   const reason = document.getElementById('jou-reason').value;
 
    try {
       console.log('期刊荐购 表单发送 开始');
@@ -137,6 +137,6 @@ document.getElementById('journalForm').addEventListener('submit', async (event) 
       document.getElementById('jou-title').value = '';
       document.getElementById('ISSN').value = '';
       document.getElementById('jou-press').value = '';
-      document.getElementById('jou-recommend-reason').value = '';
+      document.getElementById('jou-reason').value = '';
    }
 });
