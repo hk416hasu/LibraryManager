@@ -89,7 +89,7 @@
    <script>
       async function fetchStatistics() {
          try {
-            const response = await fetch('/api/statistics');
+            const response = await fetch(`/api/statistics?nocache=${Date.now()}`);
             const data = await response.json();
 
             document.getElementById('collectionCount').textContent = data.collectionCount || 'N/A';

@@ -102,7 +102,7 @@ button {
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
    try {
-      const res = await fetch('/api/order/getAll');
+      const res = await fetch(`/api/order/getAll?nocache=${Date.now()}`);
 
       if (res.ok) {
          const result = await res.json();

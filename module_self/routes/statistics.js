@@ -40,7 +40,7 @@ router.get('', (req, res) => {
             return reject(err);
          }
          const count = parseInt(stdout.split(' ')[0], 10); // 提取行数
-         resolve({ requestCount: Math.round(count / 10) });
+         resolve({ requestCount: Math.round(count / 3) });
       });
    });
 
