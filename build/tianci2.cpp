@@ -16,6 +16,7 @@
 #include <assert.h>
 #include <ctime>
 #include "global.h"
+#include "utf8.h"
 
 static nlohmann::json output;      // 返回结果为json对象
 const int MAX_ISBNS = 1000; // 假设最多存储 100 个 ISBN 号，可根据实际需求调整
@@ -723,7 +724,17 @@ int jsonCatalog()
                 info[5] = "'" + info[5] + "'";
             }
             book["pressDate"] = info[5];
-            book["introduction"] = info[6];
+
+            // 使用 utf8cpp 解析 UTF-8 字符
+            int count = 0;
+            std::string lessIntro;
+            auto it = info[6].begin();
+            while (it != info[6].end() && count < 100) {
+               uint32_t codepoint = utf8::next(it, info[6].end()); // 读取下一个 UTF-8 字符
+               utf8::append(codepoint, std::back_inserter(lessIntro)); // 将字符添加到lessIntro
+               ++count;
+            }
+            book["introduction"] = lessIntro;
         }
         else
         {
