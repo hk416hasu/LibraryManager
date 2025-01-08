@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
    } else if (method == "getUserinfo") {
       jsonDispInfo(j);
    } else if (method == "updateAuthority") {
-      // TODO
+      jsonSetAuthorityNum(j);
    }
 
    return 0;

@@ -482,9 +482,23 @@ void jsonSetAuthorityNum(json &j)
   json output;
   string uID1=j["uID1"],uID2=j["uID2"];
   char sql[1024];
-  int num=j["authorityNum"];
+  string numStr=j["authorityNum"];
+  int num=atoi(numStr.c_str());
+  int id=atoi(uID1.c_str());
   conn = mysql_init(NULL);
   mysql_real_connect(conn, host, user, passwd, db, 0, NULL, 0);
+  sprintf(sql,"SELECT * FROM user_info where uID=%d",id);
+  executeSQL(conn,sql);
+  res=store_result();
+  if(mysql_num_rows(res) == 0)
+  {
+  output={
+    {"message","Invalid ID"},
+    {"status","failure"}
+  };
+  }
+  else
+  {
   sprintf(sql, "UPDATE user_info SET authorityNum=%d WHERE uID=%d",num,atoi(uID1.c_str()));
   executeSQL(conn,sql);
   sprintf(sql, "user %s updated the authorityNum of user %s to %d", uID2.c_str(), uID1.c_str(),num);
@@ -497,6 +511,7 @@ void jsonSetAuthorityNum(json &j)
     {"message","success"},
     {"status","success"}
   };
+  }
   cout<<output<<endl;
   mysql_close(conn);
 }

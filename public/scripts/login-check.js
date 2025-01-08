@@ -5,10 +5,10 @@ function validateForm() {
    let isValid = true;
 
    // Username validation: 3 - 12 characters, alphanumeric
-   const usernameRegex = /^[a-zA-Z0-9]{3,12}$/;
+   const usernameRegex = /^[0-9]{8}$/;
    const usernameError = document.getElementById('username-error');
    if (!usernameRegex.test(username)) {
-      usernameError.textContent = '长度为3至12，仅包含字母和数字';
+      usernameError.textContent = '应为8位数字';
       isValid = false;
    } else {
       usernameError.textContent = '';
