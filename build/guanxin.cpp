@@ -68,7 +68,7 @@ vector<manageRecord> getManageRecord();                                         
 void updatePOFTable(string managerID, POF pof, string change_type);               // 1维护单位表
 void jsonSignUp(json &j);
 void jsonSignIn(json &j);
-json jsGetAuthority(json &j);
+json jsGetAuthority(const json &j);
 void jsonGetAuthority(json &j);
 void jsonDispInfo(json &j);
 void jsonUpdateUserInfo(json &j);
@@ -324,7 +324,7 @@ void jsonGetAuthority(json &j)
     mysql_close(conn);
     cout << output << endl;
 }
-json jsGetAuthority(json &j)
+json jsGetAuthority(const json &j)
 {
     conn = mysql_init(NULL);
     mysql_real_connect(conn, host, user, passwd, db, 0, NULL, 0);
@@ -519,10 +519,13 @@ int getCredit(string uID) // 获得用户信任位
 {
     char sql[1024];
     int id = atoi(uID.c_str());
+    conn = mysql_init(NULL);
+    mysql_real_connect(conn, host, user, passwd, db, 0, NULL, 0);
     sprintf(sql, "SELECT credit FROM user_info WHERE uID=%d", id);
     executeSQL(conn, sql);
     res = store_result();
     row = mysql_fetch_row(res);
+    mysql_close(conn);
     return atoi(row[0]);
 }
 void setCredit(string uID)
@@ -534,6 +537,8 @@ void setCredit(string uID)
         cout << "You have no right" << endl;
         return;
     }*/
+    conn = mysql_init(NULL);
+    mysql_real_connect(conn, host, user, passwd, db, 0, NULL, 0);
     int id = atoi(uID.c_str());//, mid = atoi(managerID.c_str());
     sprintf(sql, "UPDATE user_info SET credit=%d WHERE uID=%d", 0, id);
     executeSQL(conn, sql);
@@ -543,6 +548,7 @@ void setCredit(string uID)
     mr.record.assign(sql);
     mr.uID = atoi(uID.c_str());
     writeRecord(mr);
+    mysql_close(conn);
 }
 void writeRecord(manageRecord mr)
 {
