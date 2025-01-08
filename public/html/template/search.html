@@ -187,7 +187,7 @@ button {
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
    try {
-      const res = await fetch('/api/libSearch/all');
+      const res = await fetch(`/api/libSearch/all?nocache=${Date.now()}`);
       if (res.ok) {
          const result = await res.json();
          console.log('获取成功', result);
