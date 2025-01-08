@@ -14,12 +14,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <ctime>
+#include "global.h"
 
-nlohmann::json output;      // 返回结果为json对象
+static nlohmann::json output;      // 返回结果为json对象
 const int MAX_ISBNS = 1000; // 假设最多存储 100 个 ISBN 号，可根据实际需求调整
 std::string isbnArray[MAX_ISBNS];
 nlohmann::json book;
-
+static nlohmann::json historyBooks; // 一次循环输出的图书表
 // 数据库连接配置
 // 服务器地址
 static const char *server = "82.156.207.47";
@@ -33,7 +35,9 @@ static const char *database = "test_zhu";
 // 全局变量保存顺序号
 int globalSeqNumber = 0;
 
-MYSQL *connectToDatabase()
+static std::string getCurrentTime();
+
+static MYSQL *connectToDatabase()
 {
     // 初始化MySQL连接
     MYSQL *conn = mysql_init(nullptr);
@@ -97,7 +101,7 @@ std::pair<std::string, char> readBookInfo(const std::string &jsonFilePath)
     catch (const nlohmann::json::parse_error &e)
     {
         // 输出错误信息
-        std::string Message = std::string("解析JSON文件失败: ") + jsonFilePath;
+        std::string Message = std::string("分析JSON文件失败: ") + jsonFilePath;
         output["status"] = "failure";
         output["message"] = Message;
         // std::cout << output << std::endl;
@@ -190,8 +194,8 @@ std::pair<std::string, char> readBookInfo(const std::string &jsonFilePath)
     return {genus, authorInitial};
 }
 
-// 查重并增量函数
-std::string checkAndIncrementBook(const std::string &isbn)
+/*// 查重并增量函数
+std::string ifExitIncBook(const nlohmann::json &book)
 {
     // 初始化MySQL连接
     MYSQL *conn = mysql_init(nullptr);
@@ -267,7 +271,7 @@ std::string checkAndIncrementBook(const std::string &isbn)
         mysql_free_result(result);
 
         // 构建更新记录的SQL语句
-        query = "UPDATE book_circulation SET totalNum = " + std::to_string(totalNum + 1) + " WHERE ISBN = '" + isbn + "'";
+        query = "UPDATE book_circulation SET totalNum = totalNum + 1,leftNum = leftNum + 1 WHERE ISBN = '" + isbn + "'";
         if (mysql_query(conn, query.c_str()) != 0)
         {
             std::string Message = "更新记录失败: " + std::string(mysql_error(conn));
@@ -286,7 +290,7 @@ std::string checkAndIncrementBook(const std::string &isbn)
             // 如果更新成功，返回成功信息
             std::string successMessage = "成功更新记录数量，新的数量为 " + std::to_string(totalNum + 1);
             mysql_close(conn);
-            return successMessage;
+            return "success";
         }
     }
     else
@@ -294,9 +298,9 @@ std::string checkAndIncrementBook(const std::string &isbn)
         // 如果未找到记录，返回相应信息
         mysql_free_result(result);
         mysql_close(conn);
-        return "NOfind";
+        return "Nofind";
     }
-}
+}*/
 
 // 编目图书函数
 std::string catalogBook(const std::string &isbn, const std::string &classificationNumber, char authorInitial)
@@ -316,7 +320,7 @@ std::string catalogBook(const std::string &isbn, const std::string &classificati
     std::ostringstream oss;
     oss << std::setw(4) << std::setfill('0') << globalSeqNumber;
     std::string seqNumberStr = oss.str();
-    std::string newCatalogNumber = classificationNumber + authorInitial + seqNumberStr;
+    std::string newCatalogNumber = authorInitial + seqNumberStr;
 
     // 递增全局顺序号
     globalSeqNumber++;
@@ -326,75 +330,108 @@ std::string catalogBook(const std::string &isbn, const std::string &classificati
 
 int getisbn()
 {
-//  // 给采访子系统发送请求
-//  httplib::Client cli("http://0.0.0.0:8080");
-//  auto res = cli.Post("/get_isbns");
+     // 给采访子系统发送请求
+     httplib::Client cli("http://0.0.0.0:8080");
+     auto res = cli.Post("/get_isbns");
 
-//  // std::string isbnArray[MAX_ISBNS];
-//  int index = 0;
-//  if (res && res->status == 200)
-//  {
-//      nlohmann::json isbns = nlohmann::json::parse(res->body);
-//      for (const auto &isbn : isbns)
-//      {
-//          if (index < MAX_ISBNS)
-//          {
-//              isbnArray[index++] = isbn.get<std::string>();
-//          }
-//          else
-//          {
-//              std::string Message = "数组已满，无法存储更多的 ISBN 号";
-//              output["status"] = "failure";
-//              output["message"] = Message;
-//              std::cout << output << std::endl;
+     // std::string isbnArray[MAX_ISBNS];
+     int index = 0;
+     if (res && res->status == 200)
+     {
+         nlohmann::json isbns = nlohmann::json::parse(res->body);
+         for (const auto &isbn : isbns)
+         {
+             if (index < MAX_ISBNS)
+             {
+                 isbnArray[index++] = isbn.get<std::string>();
+             }
+             else
+             {
+                 std::string Message = "数组已满，无法存储更多的 ISBN 号";
+                 output["status"] = "failure";
+                 output["message"] = Message;
+                 std::cout << output << std::endl;
 
-//              // std::cerr << "数组已满，无法存储更多的 ISBN 号" << std::endl;
-//              break;
-//          }
-//      }
-//      return index;
-//  }
-//  else
-//  {
-//      std::string Message = "请求失败";
-//      output["status"] = "failure";
-//      output["message"] = Message;
-//      std::cout << output << std::endl;
-//      // std::cerr << "请求失败" << std::endl;
-//      return index;
-//  }
-   // TODO: should integrate with guoli
-   int index = 0;
-   std::string isbn;
-   isbn = "9787115426871";
-   isbnArray[index++] = isbn;
-   isbn = "9787111677222";
-   isbnArray[index++] = isbn;
+                 // std::cerr << "数组已满，无法存储更多的 ISBN 号" << std::endl;
+                 break;
+             }
+         }
+         return index;
+     }
+     else
+     {
+      // std::string Message = "请求失败";
+      // output["status"] = "failure";
+      // output["message"] = Message;
+      // std::cout << output << std::endl;
+         // std::cerr << "请求失败" << std::endl;
+         return index;
+     }
+    // TODO: should integrate with guoli
+    // int index = 0;
+    // std::string isbn;
+    // isbn = "9787115539168";
+    // isbnArray[index++] = isbn;
+    // return index;
 }
 
-void createTables(MYSQL *conn)
+nlohmann::json createAndWriteToTransferList(MYSQL *conn, const nlohmann::json &book)
 {
+
     // 创建移送清单表的SQL语句
-    const char *createTransferListTable = "CREATE TABLE IF NOT EXISTS TransferTable ("
-                                          "isbn VARCHAR(255),"
-                                          //"time DATETIME,"
-                                          "time DATE,"
-                                          "adminname VARCHAR(255))";
+    const char *createTransferTable = "CREATE TABLE IF NOT EXISTS TransferTable ("
+                                      "ISBN CHAR(13),"
+                                      "callNum VARCHAR(255),"
+                                      "CLCNum VARCHAR(255),"
+                                      "bookTitle VARCHAR(255),"
+                                      "author VARCHAR(255),"
+                                      "press VARCHAR(255),"
+                                      "pressDate VARCHAR(255),"
+                                      "introduction VARCHAR(255),"
+                                      "time DATE"
+                                      ")";
 
     // 执行创建移送清单表的SQL语句
-    if (mysql_query(conn, createTransferListTable) != 0)
+    if (mysql_query(conn, createTransferTable) != 0)
     {
-        // 输出错误信息
-        std::cerr << "移送清单不存在，且创建移送清单表失败: " << mysql_error(conn) << std::endl;
+        // std::cerr << "移送清单不存在，且创建移送清单表失败: " << mysql_error(conn) << std::endl;
+        output["status"] = "failure";
+        output["message"] = "移送清单不存在，且创建移送清单表失败: " + std::string(mysql_error(conn));
     }
     else
     {
-        // 输出成功信息
-        // std::cout << "移送清单表创建成功" << std::endl;
+        // 构造插入语句
+        std::stringstream ss;
+        // ss << "INSERT INTO book_circulation (ISBN, callNum, CLCNum, bookTitle, author, press, pressDate, introduction,time) VALUES ('"
+        //    << book["ISBN"] << "', '" << book["callNum"] << "', '" << book["CLCNum"] << "', '" << book["bookTitle"] << "', '" << book["author"] << "', '"
+        //    << book["press"] << "', '" << book["pressDate"] << "', '" << book["introduction"] << "', '" << getCurrentTime() << "')";
+
+        ss << "INSERT INTO TransferTable (ISBN, callNum, CLCNum, bookTitle, author, press, pressDate, introduction,time) VALUES ('"
+           << book["ISBN"].get<std::string>() << "', '" << book["callNum"].get<std::string>() << "', '" << book["CLCNum"].get<std::string>() << "', '" << book["bookTitle"].get<std::string>() << "', '" << book["author"].get<std::string>() << "', '"
+           << book["press"].get<std::string>() << "', " << book["pressDate"].get<std::string>() << ", '" << book["introduction"].get<std::string>() << "', '" << getCurrentTime() << "')";
+
+        std::string query = ss.str();
+
+        // 执行插入语句
+        if (mysql_query(conn, query.c_str()) != 0)
+        {
+            // std::cerr << "写入移送清单失败: " << mysql_error(conn) << std::endl;
+            output["status"] = "failure";
+            output["message"] = "写入移送清单失败: " + std::string(mysql_error(conn));
+        }
+        else
+        {
+            // 输出成功信息
+            // std::cout << "成功写入移送清单" << std::endl;
+            
+            historyBooks.push_back(book);
+        }
     }
+
+    return historyBooks;
 }
 
-std::string getCurrentTime()
+static std::string getCurrentTime()
 {
     // 获取当前时间
     std::time_t now = std::time(nullptr);
@@ -409,23 +446,26 @@ std::string getCurrentTime()
 }
 /**
  * @brief 插入新的图书记录
- * 
+ *
  * 该函数接收一个 `nlohmann::json` 类型的参数 `book`，表示要插入的图书信息。
  * 函数首先连接到 MySQL 数据库，然后根据图书的 ISBN 号插入新的图书记录。
- * 
+ *
  * @param book 包含图书信息的 `nlohmann::json` 对象
  * @return std::string 表示操作结果的字符串
  */
-std::string insertRecord(const nlohmann::json& book) {
+/*std::string InsertRecord(const nlohmann::json &book)
+{
     // 初始化MySQL连接
-    MYSQL* conn = mysql_init(nullptr);
-    if (!conn) {
+    MYSQL *conn = mysql_init(nullptr);
+    if (!conn)
+    {
         // 如果连接初始化失败，返回错误信息
         return "mysql_init() failed";
     }
 
     // 连接到MySQL数据库
-    if (!mysql_real_connect(conn, server, user, password, database, 0, nullptr, 0)) {
+    if (!mysql_real_connect(conn, server, user, password, database, 0, nullptr, 0))
+    {
         // 如果连接数据库失败，构造错误信息
         std::string error = "mysql_real_connect() failed: ";
         // 获取 MySQL 错误信息并添加到错误信息中
@@ -442,11 +482,14 @@ std::string insertRecord(const nlohmann::json& book) {
     // 插入新记录
     std::stringstream ss;
     ss << "INSERT INTO book_circulation (ISBN, callNum, CLCNum, bookTitle, author, press, pressDate, introduction, leftNum, totalNum) VALUES ('"
-       << isbn << "', '" << book["callNum"] << "', '" << book["CLCNum"] << "', '" << book["bookTitle"] << "', '" << book["author"] << "', '"
-       << book["press"] << "', '" << book["pressDate"] << "', '" << book["introduction"] << "', 1, 1)";
+       << isbn << "', '" << book["callNum"].get<std::string>() << "', '" << book["CLCNum"].get<std::string>() << "', '" << book["bookTitle"].get<std::string>() << "', '" << book["author"].get<std::string>() << "', '"
+       << book["press"].get<std::string>() << "', " << book["pressDate"].get<std::string>() << ", '" << book["introduction"].get<std::string>() << "', 1, 1)";
     std::string query = ss.str();
 
-    if (mysql_query(conn, query.c_str())!= 0) {
+    std::cout << query << std::endl;
+
+    if (mysql_query(conn, query.c_str()) != 0)
+    {
         // 如果插入新记录失败，构造错误信息
         std::string error = "插入新记录失败: ";
         // 获取 MySQL 错误信息并添加到错误信息中
@@ -455,33 +498,23 @@ std::string insertRecord(const nlohmann::json& book) {
         mysql_close(conn);
         // 返回错误信息
         return error;
-    } else {
+    }
+    else
+    {
         // 关闭 MySQL 连接
         mysql_close(conn);
         // 返回成功插入新记录的信息
         return "success";
     }
-}
-void writeToTransferList(MYSQL *conn, const std::string &isbn, const std::string &adminName)
-{
-    // 构造插入语句
-    std::string query = "INSERT INTO TransferTable (isbn, catalogcode, time, adminname) VALUES ('" + isbn + "', '" + "', '" + getCurrentTime() + "', '" + adminName + "')";
-    // 执行插入语句
-    if (mysql_query(conn, query.c_str()) != 0)
-    {
-        // 输出错误信息
-        // std::cerr << "写入移送清单失败: " << mysql_error(conn) << std::endl;
-    }
-    else
-    {
-        // 输出成功信息
-        // std::cout << "成功写入移送清单" << std::endl;
-    }
-}
+}*/
+
 void isbn_search(const char *isbn)
 {
     char command[100];
     snprintf(command, sizeof(command), "nodejs ./isbn2.js %s > ./info_tianci.json", isbn);
+    
+    // std::cout << command << std::endl;
+    
     assert(system(command) != -1);
 }
 
@@ -610,46 +643,45 @@ int jsonCatalog()
     // 如果连接失败
     if (!conn)
     {
-        // 输出错误信息
-        // std::string Message = "无法连接到数据库" + std::string(mysql_error(conn));
-        // output["status"] = "failure";
-        // output["message"] = Message;
         std::cout << output << std::endl;
         return 1;
     }
 
     std::string isbn;
-    // TODO: wait to integrate with guoli
     int index = getisbn(); // 获取isbn号和数量
 
     if (index == 0)
     {
-        std::string Message = "请求未获取到isbn,请检查服务器是否运行";
+        std::string Message = "请求未获取到isbn,请检查guoli服务器是否运行";
         output["status"] = "failure";
         output["message"] = Message;
         std::cout << output << std::endl;
         return 1;
     }
+    
+    // std::cout << index << std::endl;
 
+    historyBooks.clear(); // 本次循环输出的图书表，提前清空
+    // 在循环内部一个一个处理isbn
     for (int i = 0; i < index; ++i)
     {
         isbn = isbnArray[i];
 
         isbn_search(isbn.c_str());
         // JSON文件路径
-        std::string jsonFilePath = "./info_tianci.json";
+        std::string jsonFilePath1 = "./info_tianci.json";
         // 读取图书信息
-        auto result = readBookInfo(jsonFilePath); // first为分类号，second为作者姓名首字母
+        auto result = readBookInfo(jsonFilePath1); // first为分类号，second为作者姓名首字母
         if ((result.second >= '0') && (result.second <= '9'))
         {
             std::cout << output << std::endl;
             return 1;
-        }
+        } // 0-9错误
 
         // 编目图书
         std::string catalogcode = catalogBook(isbn, result.first, result.second);
 
-        if (catalogcode.find(result.first) != std::string::npos)
+        if (catalogcode.length() == 5) // 说明编目出错
         {
         }
         else
@@ -660,16 +692,36 @@ int jsonCatalog()
             std::cout << output << std::endl;
         }
 
-        std::string jsonFilePath = "./info_tianci.json"; // 读取全部信息
-        std::vector<std::string> info = readJsonfullInfo(jsonFilePath);
+        std::string jsonFilePath2 = "./info_tianci.json"; // 读取全部信息
+        std::vector<std::string> info = readJsonfullInfo(jsonFilePath2);
         book["callNum"] = catalogcode;
-        if (!info.empty())
+        if (!info.empty()) // 获取详细信息是为了写进流通库表
         {
             book["ISBN"] = info[0];
-            book["CLCNum"] = info[1];
+            if (info[1].empty())
+            {
+                // std::cout << "info[1] 为空" << std::endl;
+                book["CLCNum"] = "didnotget";
+            }
+            else
+            {
+                // std::cout << "info[1] 不为空" << std::endl;
+                size_t pos = info[1].find('.');
+                info[1] = info[1].substr(0, pos);
+                book["CLCNum"] = info[1];
+            }
             book["bookTitle"] = info[2];
             book["author"] = info[3];
             book["press"] = info[4];
+            if (info[5].length() == 7 && info[5][4] == '-' && std::isdigit(info[5][0]) && std::isdigit(info[5][1]) &&
+                std::isdigit(info[5][3]) && std::isdigit(info[5][4]))
+            {
+                info[5] = "'" + info[5] + "-13" + "'";
+            }
+            else
+            {
+                info[5] = "'" + info[5] + "'";
+            }
             book["pressDate"] = info[5];
             book["introduction"] = info[6];
         }
@@ -682,36 +734,36 @@ int jsonCatalog()
             return 1;
         }
         // 检查并更新图书记录的数量
-        std::string checkResult = checkAndIncrementBook(isbn);
+        std::string checkResult = ifExitIncBook(book);
 
-        
-        
-        // 如果未找到记录，进行插入
-        if (checkResult.find("Nofind") != std::string::npos || checkResult.find("success") != std::string::npos)
+        // 如果未找到记录，进行插入（很多判断）
+        if (checkResult.find("success") != std::string::npos)
         {
-
-            std::string Message = "记录存在，且成功增加";
+            std::string Message = "记录成功增加";
             output["status"] = "success";
             output["message"] = Message;
 
-            if (checkResult.find("Nofind") != std::string::npos)
+            // 写入移送清单
+            createAndWriteToTransferList(conn, book);
+        }
+        else if (checkResult.find("Nofind") != std::string::npos)
+        {
+            std::string insert = InsertRecord(book);
+
+            if (insert != "success")
             {
-                std::string insert = insertRecord(book);
-                std::string Message = "记录不存在，且插入成功";
-                output["status"] = "success";
+                std::string Message = insert;
+                output["status"] = "failture";
                 output["message"] = Message;
-
-                if (insert !="success")
-                {
-                    std::string Message = insert;
-                    output["status"] = "failture";
-                    output["message"] = Message;
-                    std::cout << output << std::endl;
-                    return 1;
-                }
-
+                std::cout << output << std::endl;
+                return 1;
             }
 
+            std::string Message = "记录插入成功";
+            output["status"] = "success";
+            output["message"] = Message;
+            // 写入移送清单
+            createAndWriteToTransferList(conn, book);
         }
         else
         {
@@ -721,10 +773,9 @@ int jsonCatalog()
             std::cout << output << std::endl;
             return 1;
         }
-
-        // 写入移送清单
-        writeToTransferList(conn, isbn, "admin1");
     }
+
+    output["array_key"] = historyBooks;
     std::cout << output << std::endl;
     return 1;
 }

@@ -10,3 +10,4 @@ build/*
 !build/**/*.cpp
 !build/**/*.h
 !build/**/Makefile
+info_tianci.json

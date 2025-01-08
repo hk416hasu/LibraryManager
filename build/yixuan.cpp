@@ -22,11 +22,16 @@ static const char* db = "test_zhang";
 MYSQL* connectToDB(const char* host, const char* user, const char* passwd, const char* db);
 void releaseDB(MYSQL* conn, MYSQL_RES* res);
 std::string extractString(const nlohmann::json& j, const std::string& key);
-
+/*
 string ifExit(std::string ISBN);
 std::string ifExitIncBook(const nlohmann::json& Book);
 std::string InsertRecord(const nlohmann::json& Book);
 std::string DecBookNum(const nlohmann::json& Book);
+*/
+std::string ifExitIncBook(const nlohmann::json& book);
+std::string InsertRecord(const nlohmann::json& book);
+std::string DecBookNum(const nlohmann::json& book);
+
 
 int GetLeftNum(const nlohmann::json Borrow);
 //int GetTotalNum(const nlohmann::json Borrow);
@@ -48,6 +53,8 @@ int IncreaseLeftNum(const nlohmann::json Return);
 
 void jsonBorrowBook(nlohmann::json Borrow);
 void jsonReturnBook(nlohmann::json Borrow);
+
+
 
 /*int main() {
     nlohmann::json Borrow;
@@ -108,7 +115,244 @@ std::string extractString(const nlohmann::json& j, const std::string& key) {
     return "";
 }
 
-string ifExit(std::string ISBN) {
+std::string ifExitIncBook(const nlohmann::json& book)
+{
+    // 初始化MySQL连接
+    MYSQL* conn = mysql_init(nullptr);
+    if (!conn)
+    {
+        // 如果初始化失败，返回相应信息
+        std::string Message = std::string("初始化MySQL连接失败");
+       // output["status"] = "failure";
+        //output["message"] = Message;
+        //std::cout << output << std::endl;
+        // std::cerr << "mysql_init() failed" << std::endl;
+        return Message;
+    }
+
+    // 连接到MySQL数据库
+    if (!mysql_real_connect(conn, host, user, passwd, db, 0, nullptr, 0))
+    {
+       // std::string Message = "mysql_real_connect() failed: " + std::string(mysql_error(conn));
+        //output["status"] = "failure";
+       // output["message"] = Message;
+        //std::cout << output << std::endl;
+        // std::cerr << "mysql_real_connect() failed: " << mysql_error(conn) << std::endl;
+        std::string error = "mysql_real_connect() failed: ";
+        error += mysql_error(conn);
+        // 关闭MySQL连接
+        mysql_close(conn);
+        return error;
+    }
+
+    // 获取ISBN号
+    std::string isbn = book["ISBN"];
+
+    // 检查是否存在该ISBN号的记录并获取数量
+    std::string query = "SELECT totalNum FROM book_circulation WHERE ISBN = '" + isbn + "'";
+    if (mysql_query(conn, query.c_str()) != 0)
+    {
+        //std::string Message = "查询数据库流通库表失败: " + std::string(mysql_error(conn));
+        //output["status"] = "failure";
+        //output["message"] = Message;
+       // std::cout << output << std::endl;
+        // std::cerr << "查询数据库流通库表失败: " << mysql_error(conn) << std::endl;
+        std::string error = "查询数据库流通库表失败: ";
+        error += mysql_error(conn);
+        // 关闭MySQL连接
+        mysql_close(conn);
+        return error;
+    }
+
+    // 获取查询结果
+    MYSQL_RES* result = mysql_store_result(conn);
+    if (!result)
+    {
+        //std::string Message = "获取查询结果失败: " + std::string(mysql_error(conn));
+        //output["status"] = "failure";
+        //output["message"] = Message;
+       // std::cout << output << std::endl;
+        // std::cerr << "获取查询结果失败: " << mysql_error(conn) << std::endl;
+        std::string error = "获取查询结果失败: ";
+        error += mysql_error(conn);
+        // 关闭MySQL连接
+        mysql_close(conn);
+        return error;
+    }
+
+    if (mysql_num_rows(result) > 0)
+    {
+        // 获取查询结果的第一行
+        MYSQL_ROW row = mysql_fetch_row(result);
+        // 将查询结果转换为整数
+        int totalNum = atoi(row[0]);
+
+        // 释放查询结果
+        mysql_free_result(result);
+
+        // 构建更新记录的SQL语句
+        query = "UPDATE book_circulation SET totalNum = totalNum + 1,leftNum = leftNum + 1 WHERE ISBN = '" + isbn + "'";
+        if (mysql_query(conn, query.c_str()) != 0)
+        {
+           // std::string Message = "更新记录失败: " + std::string(mysql_error(conn));
+            //output["status"] = "failure";
+           // output["message"] = Message;
+           // std::cout << output << std::endl;
+            // std::cerr << "更新记录失败: " << mysql_error(conn) << std::endl;
+            std::string error = "更新记录失败: ";
+            error += mysql_error(conn);
+            // 关闭MySQL连接
+            mysql_close(conn);
+            return error;
+        }
+        else
+        {
+            // 如果更新成功，返回成功信息
+            std::string successMessage = "成功更新记录数量，新的数量为 " + std::to_string(totalNum + 1);
+            mysql_close(conn);
+            return "success";
+        }
+    }
+    else
+    {
+        // 如果未找到记录，返回相应信息
+        mysql_free_result(result);
+        mysql_close(conn);
+        return "Nofind";
+    }
+}
+
+
+std::string InsertRecord(const nlohmann::json& book)
+{
+    // 初始化MySQL连接
+    MYSQL* conn = mysql_init(nullptr);
+    if (!conn)
+    {
+        // 如果连接初始化失败，返回错误信息
+        return "mysql_init() failed";
+    }
+
+    // 连接到MySQL数据库
+    if (!mysql_real_connect(conn, host, user, passwd, db, 0, nullptr, 0))
+    {
+        // 如果连接数据库失败，构造错误信息
+        std::string error = "mysql_real_connect() failed: ";
+        // 获取 MySQL 错误信息并添加到错误信息中
+        error += mysql_error(conn);
+        // 关闭 MySQL 连接
+        mysql_close(conn);
+        // 返回错误信息
+        return error;
+    }
+
+    // 获取ISBN号
+    std::string isbn = book["ISBN"];
+
+    // 插入新记录
+    std::stringstream ss;
+    ss << "INSERT INTO book_circulation (ISBN, callNum, CLCNum, bookTitle, author, press, pressDate, introduction, leftNum, totalNum) VALUES ('"
+        << isbn << "', '" << book["callNum"].get<std::string>() << "', '" << book["CLCNum"].get<std::string>() << "', '" << book["bookTitle"].get<std::string>() << "', '" << book["author"].get<std::string>() << "', '"
+        << book["press"].get<std::string>() << "', " << book["pressDate"].get<std::string>() << ", '" << book["introduction"].get<std::string>() << "', 1, 1)";
+    std::string query = ss.str();
+
+    //std::cout << query << std::endl;
+
+    if (mysql_query(conn, query.c_str()) != 0)
+    {
+        // 如果插入新记录失败，构造错误信息
+        std::string error = "插入新记录失败: ";
+        // 获取 MySQL 错误信息并添加到错误信息中
+        error += mysql_error(conn);
+        // 关闭 MySQL 连接
+        mysql_close(conn);
+        // 返回错误信息
+        return error;
+    }
+    else
+    {
+        // 关闭 MySQL 连接
+        mysql_close(conn);
+        // 返回成功插入新记录的信息
+        return "success";
+    }
+}
+
+
+std::string DecBookNum(const nlohmann::json& book)
+{
+
+    // 初始化MySQL连接
+    MYSQL* conn = mysql_init(nullptr);
+    if (!conn)
+    {
+        // 如果连接初始化失败，返回错误信息
+        return "mysql_init() failed";
+    }
+
+    // 连接到MySQL数据库
+    if (!mysql_real_connect(conn, host, user, passwd, db, 0, nullptr, 0))
+    {
+        // 如果连接数据库失败，构造错误信息
+        std::string error = "mysql_real_connect() failed: ";
+        // 获取 MySQL 错误信息并添加到错误信息中
+        error += mysql_error(conn);
+        // 关闭 MySQL 连接
+        mysql_close(conn);
+        // 返回错误信息
+        return error;
+    }
+
+    // 获取ISBN号
+    std::string ISBN = book["ISBN"];
+    // 检查图书是否存在
+    std::string query = "SELECT totalNum FROM book_circulation WHERE ISBN = '" + ISBN + "'";
+    if (mysql_query(conn, query.c_str()) != 0)
+    {
+        // std::cerr << "查询图书失败: " << mysql_error(conn) << std::endl;
+        return "查询图书失败: " + std::string(mysql_error(conn));
+    }
+
+    MYSQL_RES* result = mysql_store_result(conn);
+    if (!result)
+    {
+
+        // std::cerr << "获取查询结果失败: " << mysql_error(conn) << std::endl;
+        return "获取查询结果失败: " + std::string(mysql_error(conn));
+    }
+
+    if (mysql_num_rows(result) == 0)
+    {
+        // std::cerr << "不存在该图书" << std::endl;
+        return "不存在该图书" + std::string(mysql_error(conn));
+        mysql_free_result(result);
+    }
+    else
+    {
+        // 更新图书数量
+        query = "UPDATE book_circulation SET totalNum = totalNum - 1,leftNum = leftNum - 1 WHERE ISBN = '" + ISBN + "'";
+        if (mysql_query(conn, query.c_str()) != 0)
+        {
+
+            // std::cerr << "更新图书数量失败: " << mysql_error(conn) << std::endl;
+            return "更新图书数量失败: " + std::string(mysql_error(conn));
+        }
+        else
+        {
+            // std::string Message = "图书数量更新成功";
+            // output["status"] = "success";
+            // output["message"] = Message;
+            // std::cout << output << std::endl;
+            //  std::cout << "图书数量更新成功" << std::endl;
+        }
+    }
+
+    mysql_free_result(result);
+    return "success";
+}
+
+
+/*string ifExit(std::string ISBN) {
 
     std::string query = "SELECT totalNum FROM book_circulation WHERE ISBN = '" + ISBN + "'";
 
@@ -169,7 +413,7 @@ string ifExit(std::string ISBN) {
         }
     }
     else {
-        std::string error = "记录不存在";
+        std::string error = "Nofind";
         return error;
     }  
    
@@ -193,7 +437,8 @@ std::string ifExitIncBook(const nlohmann::json& Book) {
     releaseDB(conn, res);
     return exit;    
 }
-
+*/
+/*
 std::string InsertRecord(const nlohmann::json& Book) {
     conn = connectToDB(host, user, passwd, db);
     if (conn == NULL) {
@@ -217,7 +462,7 @@ std::string InsertRecord(const nlohmann::json& Book) {
 
     char sql[SQL_MAX];
     std::snprintf(sql, SQL_MAX, "INSERT INTO book_circulation ( ISBN,callNum,CLCNum,bookTitle,author,press,pressDate,introduction,leftNum,totalNum ) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s',%d,%d);", ISBN.c_str(), callNum.c_str(), CLCNum.c_str(), bookTitle.c_str(), author.c_str(), press.c_str(), pressDate.c_str(), introduction.c_str(), 1, 1);
-    std::cout << "Insert statement: " << sql << std::endl;
+   // std::cout << "Insert statement: " << sql << std::endl;
 
     if (mysql_real_query(conn, sql, (unsigned long)strlen(sql)) != 0) {
 
@@ -228,11 +473,12 @@ std::string InsertRecord(const nlohmann::json& Book) {
     }
     else {
         mysql_close(conn);
-        return "成功插入新记录";
+        return "success";
     }
 
 }
-
+*/
+/*
 std::string DecBookNum(const nlohmann::json& Book)
 {
     conn = connectToDB(host, user, passwd, db);   
@@ -286,6 +532,7 @@ std::string DecBookNum(const nlohmann::json& Book)
     mysql_close(conn);
     return "success";
 }
+*/
 
 void jsonBorrowBook(nlohmann::json Borrow) {
     conn = connectToDB(host, user, passwd, db);
