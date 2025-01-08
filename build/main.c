@@ -20,6 +20,8 @@ int main(int argc, char *argv[]) {
       jsonCatalog();
    } else if (method == "destroy") {
       jsonCancel(j);
+   } else if (method == "getUserinfo") {
+      jsonDispInfo(j);
    }
 
    return 0;
