@@ -64,7 +64,27 @@
       <div id="journalFormDiv" class="section" style="display: none;">
          <h1 style="text-align: center">期刊荐购！</h1>
          <form id="journalForm">
-            <!-- 期刊表单内容 -->
+
+            <label>期刊名
+               <span class="required">*</span>
+               <input type="text" id="jou-title" placeholder="enter 期刊名" required>
+            </label>
+
+            <label>ISSN
+               <span class="required">*</span>
+               <input type="text" id="ISSN" placeholder="enter ISSN" required>
+            </label>
+
+            <label>出版社
+               <span class="required">*</span>
+               <input type="text" id="jou-press" placeholder="enter press" required>
+            </label>
+
+            <label>Subject
+               <textarea id="jou-recommend-reason" placeholder="Write your recommend reason.." style="height:200px"></textarea>
+            </label>
+
+            <input type="submit" value="Submit">
          </form>
       </div>
 

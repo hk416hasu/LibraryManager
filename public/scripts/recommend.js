@@ -13,6 +13,21 @@ function validateBookForm() {
    return isValid;
 }
 
+function validateJournalForm() {
+   const ISSN = document.getElementById('ISSN').value;
+
+   let isValid = true;
+
+   const issnRegex = /^[0-9]{4}-[0-9]{3}[0-9Xx]$/;
+   if (!issnRegex.test(ISSN)) {
+      alert("ISSN格式错误");
+      document.getElementById('ISSN').value = '';
+      isValid = false;
+   }
+
+   return isValid;
+}
+
 // 书籍荐购
 document.getElementById('bookForm').addEventListener('submit', async (event) => {
    event.preventDefault();
@@ -68,5 +83,60 @@ document.getElementById('bookForm').addEventListener('submit', async (event) => 
       document.getElementById('book-press').value = '';
       document.getElementById('book-author').value = '';
       document.getElementById('book-recommend-reason').value = '';
+   }
+});
+
+// 期刊荐购
+document.getElementById('journalForm').addEventListener('submit', async (event) => {
+   event.preventDefault();
+
+   console.log('期刊荐购 start');
+
+   if (!validateJournalForm()) {
+      return;
+   }
+
+   const journalTitle = document.getElementById('jou-title').value;
+   const ISSN = document.getElementById('ISSN').value;
+   const Press = document.getElementById('jou-press').value;
+   const uID = localStorage.getItem('uID');
+   const recommendTime = new Date().toISOString().split('T')[0];
+   const reason = document.getElementById('jou-recommend-reason').value;
+
+   try {
+      console.log('期刊荐购 表单发送 开始');
+      const res = await fetch('/api_zhao/journalrecommend', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+            journalTitle: journalTitle,
+            ISSN: ISSN,
+            Press: Press,
+            uID: uID,
+            recommendTime: recommendTime,
+            reason: reason,
+         }),
+      });
+
+      console.log('期刊荐购 表单发送 结束');
+
+      if (res.ok) {
+         const result = await res.json();
+         console.log('期刊荐购 成功', result);
+         alert('期刊荐购 成功');
+      } else {
+         console.log('期刊荐购 失败');
+         alert('期刊荐购 失败');
+      } 
+   } catch (error) {
+      console.error('期刊荐购出错', error);
+      alert('期刊荐购发生错误，请稍后重试');
+   } finally {
+      document.getElementById('jou-title').value = '';
+      document.getElementById('ISSN').value = '';
+      document.getElementById('jou-press').value = '';
+      document.getElementById('jou-recommend-reason').value = '';
    }
 });
