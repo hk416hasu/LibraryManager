@@ -54,7 +54,7 @@ function validateRegisterForm() {
    }
 
    const sfz = document.getElementById('register-sfz').value;
-   const sfzRegex = /^\d{18}$/;
+   const sfzRegex = /^\d{17}[0-9X]$/;
    const sfzError = document.getElementById('register-sfz-error');
    if (!sfzRegex.test(sfz)) {
       sfzError.textContent = '身份证格式错误';

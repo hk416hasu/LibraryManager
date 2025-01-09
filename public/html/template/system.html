@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通过 SSH 备份和恢复 MySQL 教程</title>
+    <link rel="stylesheet" type="text/css" href="./css/login.css">
+    <link rel="stylesheet" href="./css/navigation.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .system-backup {
+           margin-left: 130px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .command {
+            color: #d14;
+        }
+    </style>
+</head>
+<body>
+
+   <!-- header -->
+
+   <div class="system-backup">
+       <h1>通过 SSH 备份和恢复 MySQL 教程</h1>
+
+    <h2>步骤 1: 通过 SSH 连接到服务器</h2>
+    <p>要通过 SSH 连接到服务器，请打开终端并运行以下命令：</p>
+    <pre><code class="command">ssh username@server_ip</code></pre>
+    <p>将 <code>username</code> 替换为您的 SSH 用户名，将 <code>server_ip</code> 替换为服务器的 IP 地址。</p>
+
+    <h2>步骤 2: 备份 MySQL 数据库</h2>
+    <p>连接到服务器后，使用 <code>mysqldump</code> 命令备份数据库。语法如下：</p>
+    <pre><code class="command">mysqldump -u db_user -p database_name > backup.sql</code></pre>
+    <ul>
+        <li>将 <code>db_user</code> 替换为您的 MySQL 用户名。</li>
+        <li>将 <code>database_name</code> 替换为您要备份的数据库名称。</li>
+        <li>备份将保存为当前目录中的 <code>backup.sql</code> 文件。</li>
+    </ul>
+
+    <h2>步骤 3: 将备份文件传输到本地计算机 (可选)</h2>
+    <p>如果您希望将备份保存在本地计算机上，可以使用 <code>scp</code> 命令：</p>
+    <pre><code class="command">scp username@server_ip:/path/to/backup.sql /local/path/</code></pre>
+    <p>将 <code>/path/to/backup.sql</code> 替换为服务器上备份文件的路径，将 <code>/local/path/</code> 替换为本地计算机上的目标路径。</p>
+
+    <h2>步骤 4: 从备份恢复数据库</h2>
+    <p>要从备份文件恢复数据库，首先登录到 MySQL 服务器：</p>
+    <pre><code class="command">mysql -u db_user -p</code></pre>
+    <p>然后创建一个新数据库 (如果需要)：</p>
+    <pre><code class="command">CREATE DATABASE new_database_name;</code></pre>
+    <p>退出 MySQL 提示符并恢复备份：</p>
+    <pre><code class="command">mysql -u db_user -p new_database_name < backup.sql</code></pre>
+    <ul>
+        <li>将 <code>new_database_name</code> 替换为您希望恢复数据的数据库名称。</li>
+        <li>确保 <code>backup.sql</code> 位于当前工作目录中，或者提供文件的完整路径。</li>
+    </ul>
+
+    <h2>步骤 5: 验证恢复结果</h2>
+    <p>登录到 MySQL 并检查数据是否已正确恢复：</p>
+    <pre><code class="command">mysql -u db_user -p</code></pre>
+    <p>使用恢复的数据库：</p>
+    <pre><code class="command">USE new_database_name;</code></pre>
+    <p>检查表和数据：</p>
+    <pre><code class="command">SHOW TABLES;
+SELECT * FROM table_name LIMIT 10;</code></pre>
+
+    <h2>结论</h2>
+    <p>本教程介绍了通过 SSH 连接到服务器、备份 MySQL 数据库、将备份文件传输到本地计算机以及恢复数据库的步骤。在生产环境中，请始终确保您具有适当的权限和安全的备份策略。</p>
+    </div>
+</body>
+</body>
+</html>
+
