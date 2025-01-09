@@ -86,6 +86,42 @@ document.getElementById('bookForm').addEventListener('submit', async (event) => 
    }
 });
 
+console.log(document.getElementById('book-state'));
+document.getElementById('book-state').addEventListener('click', async () => {
+   const uID = localStorage.getItem('uID');
+   console.log('press book-state button');
+
+   try {
+      console.log('书籍进度查询 开始');
+      const res = await fetch('/api_zhao/bookstate', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+            uID: uID,
+         }),
+      });
+
+      console.log('书籍进度查询 结束');
+
+      if (res.ok) {
+         const result = await res.json();
+         console.log(result);
+         console.log('书籍进度查询成功', result);
+         alert('书籍进度查询成功');
+      } else {
+         console.log(result);
+         console.log('书籍进度查询失败');
+         alert('书籍进度查询失败');
+      } 
+   } catch (error) {
+      console.error('书籍进度查询出错', error);
+      alert('书籍进度查询，请稍后重试');
+   }
+});
+
+
 // 期刊荐购
 document.getElementById('journalForm').addEventListener('submit', async (event) => {
    event.preventDefault();
