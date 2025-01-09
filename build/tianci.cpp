@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include "global.h"
 
 // TODO: should connect to the real book_circulation table!!
 
@@ -63,7 +64,7 @@ int jsonCancel(json jsonData)
     book["ISBN"] = ISBN;
 
     // 写入注销记录
-    std::string resultapi = updateBooktotalNum(book);
+    std::string resultapi = DecBookNum(book);
     if (resultapi.find("success") != std::string::npos)
     {
         writeToCancellationRecord(conn, ISBN, reason, adminName);
@@ -153,6 +154,7 @@ bool createTable(MYSQL *conn)
  * @param conn 指向 MySQL 连接对象的指针。
  * @param ISBN 图书的 ISBN 号。
  */
+/*
 std::string updateBooktotalNum(const nlohmann::json &book)
 {
 
@@ -224,6 +226,7 @@ std::string updateBooktotalNum(const nlohmann::json &book)
     mysql_free_result(result);
     return "success";
 }
+*/
 
 /**
  * @brief 写入注销记录
