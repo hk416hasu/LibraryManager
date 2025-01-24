@@ -11,3 +11,5 @@ build/*
 !build/**/*.h
 !build/**/Makefile
 info_tianci.json
+build/utf8/*
+build/httplib.h
