@@ -1,19 +1,22 @@
-# compiler
-cc = g++
+CC = g++
+# CFLAGS = -Werror -Wall -O2
+CFLAGS = -O2
+LFLAGS = -lmysqlclient
 
-# compiler flags
-CFLAGS =
-
-# Target executable
 TARGET = ./main
+SRCS = main.cpp guanxin.cpp yixuan.cpp ran.cpp tianci.cpp tianci2.cpp
+OBJS = $(SRCS:.cpp=.o)
 
-# source files
-SRCS = main.c guanxin.cpp yixuan.cpp ran.cpp tianci.cpp\
-       tianci2.cpp
+.PHONY = all clean
 
-$(TARGET): $(SRCS) # Dependency
-	$(cc) $(CFLAGS) $(SRCS) -o $(TARGET) -lmysqlclient
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET) $(LFLAGS)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(OBJS)
 
